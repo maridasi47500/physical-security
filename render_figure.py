@@ -2,11 +2,6 @@ import re
 import os
 import traceback
 from executeprogram import Executeprogram
-from artist import Artist
-from song import Song
-from cado import Cado
-from gagnant import Gagnant
-from jeu import Jeu
 import sys
 class RenderFigure():
     def __init__(self,program):
@@ -14,11 +9,6 @@ class RenderFigure():
         self.mytemplate="./mypage/index.html"
         self.path=program.get_path()
         self.title=program.get_title()
-        self.dbCado=Cado()
-        self.dbJeu=Jeu()
-        self.dbSong=Song()
-        self.dbArtist=Artist()
-        self.dbGagnant=Gagnant()
         self.headingone=program.get_title()
         self.redirect=""
         self.body=""
@@ -49,7 +39,7 @@ class RenderFigure():
                   continue
               k=j.split("%>")
               print("my session",self.session)
-              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"dbCado":self.dbCado, "dbGagnant":self.dbGagnant,"dbSong":self.dbSong,"dbArtist":self.dbArtist,"dbJeu":self.dbJeu}
+              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams}
               for n in self.params:
                   loc[n]=self.params[n]
               print(k[0])

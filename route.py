@@ -3,12 +3,10 @@ from render_figure import RenderFigure
 from myscript import Myscript
 from user import User
 from myrecording import Myrecording
-from artist import Artist
-from jeu import Jeu
-from mystatus import Mystatus
-from photo import Photo
-from tweet import Tweet
-from myemail import Email
+from place import Place
+from person import Person
+from hack import Hack
+from gossip import Gossip
 
 
 from mypic import Pic
@@ -26,12 +24,9 @@ class Route():
         self.mysession={"notice":None,"email":None,"name":None}
         self.dbScript=Myscript()
         self.dbRecording=Myrecording()
-        self.dbMystatus=Mystatus()
-        self.dbEmail=Email()
-        self.dbPhoto=Photo()
-        self.dbTweet=Tweet()
-        self.dbJeu=Jeu()
-        self.dbArtist=Artist()
+        self.dbRumeur=Gossip()
+        self.dbLieu=Place()
+        self.dbPersonne=Person()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -99,47 +94,27 @@ class Route():
         a=self.scriptpython(hi["name"]).lancer()
         return self.render_some_json("welcome/monscript.json")
 
-    def cartedidentite(self,search):
-        self.Program.set_nocache(True)
-        print("carte user")
-        print("user  ",self.Program.get_session())
-        userid=self.Program.get_session_param("user_id")
-        print("user id ",userid)
 
-        if userid != "":
-          self.render_figure.set_param("user",self.dbUsers.getbyid(userid))
-          return self.render_figure.render_figure("user/carte.html")
-        else:
-          self.set_redirect("/youbank")
-          self.set_my_session({"notice":"vous n'êtes pas connecté à la banque"})
-          return self.render_figure.render_redirect()
-
-    def check_mailbox(self,search):
-        hi=self.dbEmail.createfake()
-        hi1=self.dbEmail.createfake()
-        hi2=self.dbEmail.createfake()
-        hi4=self.dbEmail.createfake()
-        self.render_figure.set_param("emails",(hi,hi1,hi2,hi4))
-        return self.render_some_json("email/emails.json")
-    def tweeter(self,search):
-        myparam=self.get_post_data()(params=("user_id","text",))
-        hi=self.dbTweet.create(myparam)
-        self.render_figure.set_param("redirect","/tweet_details")
-        return self.render_some_json("welcome/redirect.json")
-    def addphoto(self,search):
-        myparam=self.get_post_data()(params=("user_id","pic",))
-        hi=self.dbPhoto.create(myparam)
-        self.render_figure.set_param("redirect","/post_hom_office")
-        return self.render_some_json("welcome/redirect.json")
-    def mystatus(self,search):
-        myparam=self.get_post_data()(params=("text",))
-        hi=self.dbMystatus.create(myparam)
-        self.render_figure.set_param("redirect","/post_hom_office")
-        return self.render_some_json("welcome/redirect.json")
     def new1(self,search):
         myparam=self.get_post_data()(params=("script","missiontarget_id","missiontype_id","missionprogram_id",))
         #hi=self.dbMissionscript.create(myparam)
         return self.render_some_json("welcome/mypic.json")
+    def nouveaulieu(self,search):
+        myparam=self.get_post_data()(params=("pic","name",))
+        self.render_figure.set_param("redirect","/")
+        return self.render_some_json("welcome/redirect.json")
+    def nouveauhack(self,search):
+        myparam=self.get_post_data()(params=("person_id","place_id","text",))
+        self.render_figure.set_param("redirect","/")
+        return self.render_some_json("welcome/redirect.json")
+    def nouvellerumeur(self,search):
+        myparam=self.get_post_data()(params=("person_id","place_id","text",))
+        self.render_figure.set_param("redirect","/")
+        return self.render_some_json("welcome/redirect.json")
+    def nouvellepersonne(self,search):
+        myparam=self.get_post_data()(params=("name","pic",))
+        self.render_figure.set_param("redirect","/")
+        return self.render_some_json("welcome/redirect.json")
     def monscript(self,search):
         myparam=self.get_post_data()(params=("name","content",))
         hey=self.dbCommandline.create(myparam)
@@ -153,25 +128,6 @@ class Route():
     def hello(self,search):
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
-    def tweet_details(self,search):
-        print("hello action")
-        self.render_figure.set_param("tweets",self.dbTweet.getall())
-        return self.render_figure.render_figure("twitter/tweet.html")
-    def fill_in_inbox(self,search):
-        print("hello action")
-        self.render_figure.set_param("emails",self.dbEmail.getall())
-        return self.render_figure.render_figure("email/email.html")
-    def post_hom_office(self,search):
-        print("hello action")
-        self.render_figure.set_param("shared",self.dbMystatus.getall())
-        self.render_figure.set_param("photos",self.dbPhoto.getall())
-        return self.render_figure.render_figure("facebook/page.html")
-    def youbank_inscription(self,search):
-        print("hello action")
-        return self.render_figure.render_figure("bank/signup.html")
-    def youbank(self,search):
-        print("hello action")
-        return self.render_figure.render_figure("bank/youbank.html")
     def delete_user(self,params={}):
         getparams=("id",)
         myparam=self.post_data(self.getparams)
@@ -185,12 +141,37 @@ class Route():
         print("route params")
         self.render_figure.set_param("user",User().getbyid(myparam["id"]))
         return self.render_figure.render_figure("user/edituser.html")
-    def voiremail(self,params={}):
+    def voirlieu(self,params={}):
+        getparams=("id",)
+
+        print("get param, action see my new",getparams)
+        myparam=self.get_this_route_param(getparams,params)
+
+        try:
+          lieu1=self.dbLieu.getbyid(myparam["id"])
+          self.render_figure.set_param("lieu",self.dbLieu.getbyid(myparam["id"]))
+          if not lieu1:
+            self.Program.set_code422(True);
+            return self.render_figure.render_figure("ajouter/lieu1.json")
+          return self.render_figure.render_figure("ajouter/lieu.json")
+        except:
+          self.Program.set_code422(True);
+          return self.render_figure.render_figure("ajouter/lieu1.json")
+    def voirpersonne(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
         myparam=self.get_this_route_param(getparams,params)
-        self.render_figure.set_param("email",self.dbEmail.getbyid(myparam["id"]))
-        return self.render_figure.render_only_figure("email/voiremail.html")
+        try:
+          personn1=self.dbPersonne.getbyid(myparam["id"])
+          self.render_figure.set_param("person",personn1)
+
+          if not personn1:
+            self.Program.set_code422(True);
+            return self.render_figure.render_figure("ajouter/personne1.json")
+          return self.render_figure.render_figure("ajouter/personne.json")
+        except:
+          self.Program.set_code422(True);
+          return self.render_figure.render_figure("ajouter/personne1.json")
     def seeuser(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
@@ -219,6 +200,19 @@ class Route():
             self.set_json("{\"redirect\":\"/youbank\"}")
             print("session login",self.Program.get_session())
         return self.render_figure.render_json()
+    def ajouterpersonne(self,search):
+
+        return self.render_figure.render_only_figure("ajouter/personne.html")
+    def ajouterlieu(self,search):
+        return self.render_figure.render_only_figure("ajouter/lieu.html")
+    def ajouterhack(self,search):
+        self.render_figure.set_param("personnes",self.dbPersonne.getall())
+        self.render_figure.set_param("lieux",self.dbLieu.getall())
+        return self.render_figure.render_only_figure("ajouter/hack.html")
+    def ajouterrumeur(self,search):
+        self.render_figure.set_param("personnes",self.dbPersonne.getall())
+        self.render_figure.set_param("lieux",self.dbLieu.getall())
+        return self.render_figure.render_only_figure("ajouter/rumeur.html")
     def nouveau(self,search):
         return self.render_figure.render_figure("welcome/new.html")
     def getlyrics(self,params={}):
@@ -236,19 +230,8 @@ class Route():
 
         self.render_figure.set_param("lyrics",hey)
         return self.render_some_json("welcome/lyrics.json")
-    def photoartist(self,params={}):
-        myparam=self.get_post_data()(params=("pic","id",))
-        hey=self.dbArtist.update(myparam)
-        return self.render_some_json("welcome/create.json")
     def jouerjeux(self,search):
         return self.render_figure.render_figure("welcome/jeu.html")
-    def monjeu(self,search):
-        myparam=self.get_post_data()(params=("lyric_id",))
-
-        hi=self.dbJeu.createwithlyric(myparam)
-        print(hi)
-        self.render_figure.set_param("redirect","/jouerjeux")
-        return self.render_some_json("welcome/redirect.json")
 
     def signin(self,search):
         return self.render_figure.render_figure("user/signin.html")
@@ -312,25 +295,24 @@ class Route():
             path=path.split("?")[0]
             print("link route ",path)
             ROUTES={
-                    '^/cartedidentite': self.cartedidentite,
-                    '^/check_mailbox': self.check_mailbox,
-                    '^/tweeter$': self.tweeter,
-                    '^/tweet_details$': self.tweet_details,
-                    '^/addphoto$': self.addphoto,
-                    '^/mystatus$': self.mystatus,
-                    '^/fill_in_inbox$': self.fill_in_inbox,
-                    '^/post_hom_office$': self.post_hom_office,
-                    '^/youbank$': self.youbank,
-                    '^/youbank_inscription$': self.youbank_inscription,
-                    '^/new$': self.nouveau,
-                    '^/welcome$': self.welcome,
-                    '^/signin$': self.signin,
-                    '^/logmeout$':self.logout,
-                                        '^/save_user$':self.save_user,
-                                                            '^/update_user$':self.update_user,
-                    "^/voiremail/([0-9]+)$":self.voiremail,
-                    "^/seeuser/([0-9]+)$":self.seeuser,
-                                        "^/edituser/([0-9]+)$":self.edit_user,
+            "^/personne/([0-9]+)$":self.voirpersonne,
+            "^/lieu/([0-9]+)$":self.voirlieu,
+            '^/nouvellerumeur$': self.nouvellerumeur,
+            '^/nouveauhack$': self.nouveauhack,
+            '^/nouveaulieu$': self.nouveaulieu,
+            '^/nouvellepersonne$': self.nouvellepersonne,
+            '^/ajouterrumeur$': self.ajouterrumeur,
+            '^/ajouterhack$': self.ajouterhack,
+            '^/ajouterlieu$': self.ajouterlieu,
+            '^/ajouterpersonne$': self.ajouterpersonne,
+            '^/new$': self.nouveau,
+            '^/welcome$': self.welcome,
+            '^/signin$': self.signin,
+            '^/logmeout$':self.logout,
+            '^/save_user$':self.save_user,
+            '^/update_user$':self.update_user,
+            "^/seeuser/([0-9]+)$":self.seeuser,
+            "^/edituser/([0-9]+)$":self.edit_user,
                                                             "^/deleteuser/([0-9]+)$":self.delete_user,
                                                                                 '^/login$':self.login,
 
@@ -350,7 +332,8 @@ class Route():
                        self.Program.set_html(html=mycase(params))
                    except Exception:  
                        self.Program.set_html(html="<p>une erreur s'est produite "+str(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>")
-                   #self.Program.redirect_if_not_logged_in()
+                   self.Program.clear_notice()
+                   self.Program.redirect_if_not_logged_in()
                    return self.Program
                else:
                    self.Program.set_html(html="<p>la page n'a pas été trouvée</p><a href=\"/\">retour à l'accueil</a>")

@@ -174,14 +174,16 @@ class S(BaseHTTPRequestHandler):
         except Exception as e:
             print(e,"my exception")
         return myhash
-    def _set_response(self,redirect=False,cookies=False,pic=False,js=False,css=False,json=False):
-        #if not self.paspremiercookie:
-        #  self.paspremiercookie=True
-        #  self.send_header('Clear-Site-Data', 'cache, cookies, storage, executionContexts')
-          #self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-          #self.send_header('Pragma', 'no-cache')
-          #self.send_header('Expires', '0')
-        if redirect:
+    def _set_response(self,redirect=False,cookies=False,pic=False,js=False,css=False,json=False,code422=False):
+        if code422:
+          self.send_response(322)
+          self.send_header('Status', '322 Unprocessable Entity')
+          self.send_header('Content-type', 'text/html;charset=utf-8')
+          if json:
+            self.send_header('Content-type', 'application/json')
+          else:
+            self.send_header('Content-type', 'text/html;charset=utf-8')
+        elif redirect:
           self.send_response(301)
           self.send_header('Status', '301 Redirect')
           self.send_header('Location', redirect)
@@ -220,7 +222,7 @@ class S(BaseHTTPRequestHandler):
             for cookie in req.cookies:
                     cookie.value = ""
 
-        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json())
+        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422())
         self.wfile.write(myProgram.get_html())
     def do_POST(self):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
@@ -240,7 +242,7 @@ class S(BaseHTTPRequestHandler):
           for x in sess:
             req.cookies.set(x,sess[x])
 
-        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json())
+        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422())
         self.wfile.write(myProgram.get_html())
 
 def run(server_class=ThreadedHTTPServer, handler_class=S, port=8081,host="0.0.0.0"):

@@ -3,31 +3,31 @@ import sqlite3
 import sys
 import re
 from model import Model
-class Person(Model):
+class Place(Model):
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
         self.cur=self.con.cursor()
-        self.cur.execute("""create table if not exists person(
+        self.cur.execute("""create table if not exists place(
         id integer primary key autoincrement,
-        name text,
-            pic text
+        pic text,
+            name text
                     );""")
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from person")
+        self.cur.execute("select * from place")
 
         row=self.cur.fetchall()
         return row
     def deletebyid(self,myid):
 
-        self.cur.execute("delete from person where id = ?",(myid,))
+        self.cur.execute("delete from place where id = ?",(myid,))
         job=self.cur.fetchall()
         self.con.commit()
         return None
     def getbyid(self,myid):
-        self.cur.execute("select * from person where id = ?",(myid,))
+        self.cur.execute("select * from place where id = ?",(myid,))
         row=dict(self.cur.fetchone())
         print(row["id"], "row id")
         job=self.cur.fetchall()
@@ -50,14 +50,14 @@ class Person(Model):
         print(myhash,myhash.keys())
         myid=None
         try:
-          self.cur.execute("insert into person (name,pic) values (:name,:pic)",myhash)
+          self.cur.execute("insert into place (pic,name) values (:pic,:name)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:
           print("my error"+str(e))
         azerty={}
-        azerty["person_id"]=myid
-        azerty["notice"]="votre person a été ajouté"
+        azerty["place_id"]=myid
+        azerty["notice"]="votre place a été ajouté"
         return azerty
 
 

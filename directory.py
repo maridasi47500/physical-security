@@ -2,13 +2,14 @@ class Directory():
     session=False
     pic=False
     redirect=False
+    code422=False
     js=False
     nocache=False
     json=False
     css=False
     def __init__(self, title):
         self.title=title
-        self.session={"email":None,"user_id":"","name":None,"notice":None}
+        self.session={"email":"","user_id":"","name":"","notice":""}
         self.path="./"
         self.html=""
         self.url=""
@@ -79,6 +80,10 @@ class Directory():
         return self.json
     def set_json(self,html):
         self.json=html
+    def get_code422(self):
+        return self.code422
+    def set_code422(self,html):
+        self.code422=html
     def get_js(self):
         return self.js
     def set_js(self,html):
@@ -102,17 +107,17 @@ class Directory():
         return self.title
     def get_path(self):
         return self.path
-    def redirect_if_not_logged_in(self):
+    def clear_notice(self):
         mysession=self.get_session()
         print("url : : ",self.url)
         print("session : : ",mysession)
         if not mysession["mysession"]:
             self.session["notice"]=""
-        if (not mysession or (not mysession["user_id"])) and not self.redirect and self.url not in ["/","/youbank","/youbank_inscription"]:
+    def redirect_if_not_logged_in(self):
+        mysession=self.get_session()
+        if (not mysession or mysession and (int("0"+str(mysession["user_id"])) == 0)) and not self.redirect and self.url not in ["/","/youbank","/youbank_inscription","/cartedidentite"] and self.url in ["/fill_in_inbox","/post_hom_office","/tweet_details"]:
             print("ok not loged in")
             redi="/youbank"
             self.redirect=redi
             self.html="Moved permanently to <a href=\"{url}\">{url}</a>".format(url=redi)
             self.session["notice"]="vous n'êtes pas connecté"
-            if self.url == "/joueraujeu":
-                self.session["notice"]="connecte-toi pour jouer au jeu"

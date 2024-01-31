@@ -1,5 +1,9 @@
-# bienvenue dans la sécurité de 9 à 5
-- la securité de 9h à 5h (sur facebook laisser des message comme 'nc pas tes affaires', pas partager de details personnel sur twitter)
+# bienvenue dans la rumeur security
+- gossip security :
+
+- choisis 1 lieu (bureau)
+- 1 autre lieu : (rue)
+- et lanc des rumeur de gens qui ont été hackés
 - lancer:
 ```
 $ sh mysite.sh

@@ -1,0 +1,17 @@
+<h1>
+ajouter des personnes
+</h1>
+<form action="/nouvellepersonne" method="post">
+<div class="field">
+<label for="personne_nom">nom</label>
+<input type="text" id="personne_nom" name="name"/>
+</div>
+<div class="field">
+<label for="personne_photo">photo (avec un fond transparent)</label>
+<input type="file" id="personne_photo" name="pic" onchange="(const [file] = this.files);blah.src=(file ? URL.createObjectURL(file) : '');"/>
+</div>
+<div class="actions">
+<input type="submit" value="ajouter personne"/>
+</div>
+</form>
+<img class="mypic" id="blah"/>
