@@ -3,6 +3,7 @@
 
 - choisis 1 lieu 
 - 1 autre lieu 
+- choisis des personnes
 - et lanc des rumeur de gens qui ont été hackés
 - lancer:
 ```

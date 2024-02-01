@@ -60,10 +60,17 @@ img.picperson {
 					        left: 67%;
 						    top: 50%;
 					    }
-					    form .field, form .actions, #blah,.myhack{
+					    form .field, form .actions,#blah{
 						    float:left;
 						    clear:both;
 						    width:100%;
+
+					    }
+					    .myhack{
+						    float:left;
+						    clear:both;
+						    min-width:60%;
+						    width:auto;
 
 					    }
 					    form .field *{
@@ -71,3 +78,10 @@ img.picperson {
 						    clear:both;
 
 					    }
+					    .carousel-item-next, .carousel-item-prev, .carousel-item.active {
+						        display: inline-flex;
+							    text-align: center;
+							        margin: 0 auto;
+								    padding: 0 auto;
+								        position: relative;
+								}
