@@ -24,64 +24,12 @@
 	width: 100%;
 	height: 100%;
 }
-#blah,.myhack {
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	height: 200px;
-	padding: 0 auto;
-	margin: 0 auto;
-	position: relative;
-	display: block;
-	text-align: center;
+.recordinguntitle{
+	width:100%;
+	background:blue;
+	color:white;
 }
-img.picperson {
-	    max-height: 180px;
-	        bottom: 0;
-		    position: absolute;
-		        vertical-align: bottom;
-			    margin: 0 auto;
-			        padding: 0 auto;
-				    top: 15px;
-				        /* transform: translateX(50%); */
-				        left: 0px;
-					    right: 0;
-				    }
-.hackertext {
-	    border: 1px solid white;
-	        border-radius: 8888888px;
-		    display: block;
-		        /* position: relative; */
-		        width: fit-content;
-			    margin: revert;
-			        padding: 10px;
-				    background: black;
-				        color: white;
-					    position: absolute;
-					        left: 67%;
-						    top: 50%;
-					    }
-					    form .field, form .actions,#blah{
-						    float:left;
-						    clear:both;
-						    width:100%;
-
-					    }
-					    .myhack{
-						    float:left;
-						    clear:both;
-						    min-width:60%;
-						    width:auto;
-
-					    }
-					    form .field *{
-						    float:left;
-						    clear:both;
-
-					    }
-					    .carousel-item-next, .carousel-item-prev, .carousel-item.active {
-						        display: inline-flex;
-							    text-align: center;
-							        margin: 0 auto;
-								    padding: 0 auto;
-								        position: relative;
-								}
+.control-group {
+	    float: left;
+	        width: auto;
+	}
