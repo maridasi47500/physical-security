@@ -17,7 +17,7 @@ class Gossip(Model):
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from gossip")
+        self.cur.execute("select gossip.*, person.name as personne_name, person.pic as pic_personne,lieu.pic as pic_lieu from gossip left join person on gossip.person_id = person.id left join place lieu on lieu.id = gossip.place_id")
 
         row=self.cur.fetchall()
         return row

@@ -1,6 +1,6 @@
-<div class="carousel-item active">
-	<div class="myhack" style="background-image:url('<%=hack["pic_lieu"]%>');">
-		<img src="<%=pic_personne%>" class="picperson" alt="<%=personne_name%>" />
+<div class="carousel-item <%="" if paspremier else "active"%>">
+	<div class="myhack" style="background-image:url('/uploads/<%=hack["pic_lieu"]%>');">
+		<img src="<%=hack["pic_personne"]%>" class="picperson" alt="<%=hack["personne_name"]%>" />
 		<div class="hackertext">
 		</div>
 	</div>

@@ -17,7 +17,7 @@ class Hack(Model):
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from hack")
+        self.cur.execute("select hack.*, person.name as personne_name, person.pic as pic_personne,place.pic as pic_lieu from hack left join person on hack.person_id = person.id left join place on place.id = hack.place_id")
 
         row=self.cur.fetchall()
         return row
