@@ -8,10 +8,11 @@ ajouter des lieux
 </div>
 <div class="field">
 <label for="lieu_photo">photo</label>
-<input type="file" id="lieu_photo" name="pic" onchange="(const [file] = this.files);blah.src=(file ? URL.createObjectURL(file) : '');"/>
+<input type="file" id="lieu_photo" name="pic" />
 </div>
 <div class="actions">
 <input type="submit" value="ajouter lieu"/>
 </div>
 </form>
-<img id="blah" class="mypic" />
+<div id="fileList">
+</div>

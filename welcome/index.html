@@ -2,14 +2,15 @@
 <div class="card">
 <div class="card-body">
 <p class="card-text">
-<a href="javascript:void(0)" onclick="$.ajax({url:'/ajouterlieu',success:function(data){$('#text').html(data);$('#text')[0].style.display='block';}});">ajouter un lieu</a>
+<a class="meschaussures"  href="javascript:void(0)" data-url="/ajouterlieu">
 </p>
 </div>
 </div>
 <div class="card">
 <div class="card-body">
 <p class="card-text">
-<a href="javascript:void(0)" onclick="$.ajax({url:'/ajouterpersonnes',success:function(data){$('#text').html(data);$('#text')[0].style.display='block';}});">
+<a class="meschaussures"  href="javascript:void(0)" onclick="$.ajax({url:'/ajouterpersonnes',success:function(data){$('#overlay').html(data);$('#overlay')[0].style.display='block';}});">
+<a class="meschaussures"  href="javascript:void(0)" data-url="/ajouterpersonne">
 ajouter des personnes
 </a>
 </p>
@@ -18,7 +19,7 @@ ajouter des personnes
 <div class="card">
 <div class="card-body">
 <p class="card-text">
-<a href="javascript:void(0)" onclick="$.ajax({url:'/ajouterhack',success:function(data){$('#text').html(data);$('#text')[0].style.display='block';}});">
+<a class="meschaussures"  href="javascript:void(0)" data-url="/ajouterhack">
 ajouter une personne qui a été hackée
 </a>
 </p>
@@ -27,7 +28,7 @@ ajouter une personne qui a été hackée
 <div class="card">
 <div class="card-body">
 <p class="card-text">
-<a href="javascript:void(0)" onclick="$.ajax({url:'/ajouterrumeur',success:function(data){$('#text').html(data);$('#text')[0].style.display='block';}});">
+<a class="meschaussures"  href="javascript:void(0)" data-url="/ajouterrumeur">
 ajouter une rumeur sur quelqu'un hacké
 </a>
 </p>
