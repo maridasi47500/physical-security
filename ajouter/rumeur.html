@@ -1,4 +1,4 @@
-<h1>
+<span onclick="overlay.style.display='none';">Fermer[X]</span><h1>
 ajouter une rumeur sur 1 personne
 </h1>
 <form action="/nouvellerumeur" method="post">
@@ -19,7 +19,7 @@ ajouter une rumeur sur 1 personne
 </div>
 <div class="field">
 <label for="rumeur_text">la rumeur à propos de quelqu 1 d'autre</label>
-<input type="text" id="rumeur_text" name="text" onkeyup="$('.hackertext').html(this.value);"/>
+<textarea id="rumeur_text" name="text"  onkeyup="$('.hackertext').html(this.value.replace(/\r\n|\r|\n/g,'<br>'));"></textarea>
 </div>
 <div class="actions">
 <input type="submit" value="creer rumeur"/>

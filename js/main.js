@@ -1,4 +1,3 @@
 $(function(){
-$('.carousel').carousel("cycle");
 
 });

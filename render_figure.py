@@ -69,7 +69,7 @@ class RenderFigure():
                     continue
 
                 k=j.split("%>")
-                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"dbSong":self.dbSong}
+                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection}
                 print(dict(x))
                 if k[0]:
                   print(k[0], "content render")

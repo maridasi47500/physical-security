@@ -16,16 +16,67 @@ var text=$("#rumeur_personne_id").length > 0 ? $("#rumeur_text").val() : $("#hac
 $.ajax({
 url: "/lieu/"+lieuid,
 success:function(data){
-$("#blah")[0].style.backgroundImage=(data.lieu.pic);
+$("#blah")[0].style.backgroundImage=("url(\""+data.lieu.pic+"\")");
 $("#blah")[0].style.backgroundRepeat="no-repeat";
 $("#blah")[0].style.backgroundSize="100% 100%";
+$("#blah")[0].style.height="200px";
 }
 });
 }
 
 $(function(){
 $(".meschaussures").click(function(){
-$.ajax({url:$(this)[0].dataset.url,success:function(data){$('#overlay').html(data);$('#overlay')[0].style.display='block';
+$.ajax({url:$(this)[0].dataset.url,success:function(data){$('#text').html(data);$('#overlay')[0].style.display='block';
+
+
+	$('#text form').on('submit', function () {
+		  if (window.filesize > 1024*5) {
+			      alert('max upload size is 5k');
+			  return false;
+			    }
+		  $.ajax({
+			      // Your server script to process the upload
+			       url: $(this).attr("action"),
+			           type: $(this).attr("method"),
+			  
+			               // Form data
+			                   data: new FormData($(this)[0]),
+			  
+			                       // Tell jQuery not to process data or worry about content-type
+			                           // You *must* include these options!
+			                               cache: false,
+			                                   contentType: false,
+			                                       processData: false,
+			  
+			                                           // Custom XMLHttpRequest
+			                                               success: function (data) {
+			                                               	    console.log("HEY")
+			                                               	    	    console.log(JSON.stringify(data))
+			                                               	    	    	    console.log(JSON.stringify(data.redirect))
+			                                               	    	    	    	    if (data.redirect){
+			                                               	    	    	    	    	    window.location=data.redirect;
+			                                               	    	    	    	    	    	    }else{
+			                                               	    	    	    	    	    	    	    window.location="/";
+			                                               	    	    	    	    	    	    	    	    }
+			                                               	    	    	    	    	    	    	    	    },
+			                                               	    	    	    	    	    	    	    	        xhr: function () {
+			                                               	    	    	    	    	    	    	    	              var myXhr = $.ajaxSettings.xhr();
+			                                               	    	    	    	    	    	    	    	                    if (myXhr.upload) {
+			                                               	    	    	    	    	    	    	    	                            // For handling the progress of the upload
+			                                               	    	    	    	    	    	    	    	                                    myXhr.upload.addEventListener('progress', function (e) {
+			                                               	    	    	    	    	    	    	    	                                              if (e.lengthComputable) {
+			                                               	    	    	    	    	    	    	    	                                                          $('progress').attr({
+			                                               	    	    	    	    	    	    	    	                                                                        value: e.loaded,
+			                                               	    	    	    	    	    	    	    	                                                                                      max: e.total,
+			                                               	    	    	    	    	    	    	    	                                                                                                  });
+			                                               	    	    	    	    	    	    	    	                                                                                                            }
+			                                               	    	    	    	    	    	    	    	                                                                                                                    }, false);
+			                                               	    	    	    	    	    	    	    	                                                                                                                          }
+			                                               	    	    	    	    	    	    	    	                                                                                                                                return myXhr;
+			                                               	    	    	    	    	    	    	    	                                                                                                                                    }
+			                                               	    	    	    	    	    	    	    	                                                                                                                                      });
+			                                               	    	    	    	    	    	    	    	                                                                                                                                      	return false;
+			                                               	    	    	    	    	    	    	    	                                                                                                                                      	  });
 if ($("#personne_photo").length > 0 || $("#lieu_photo").length > 0){
 var fileElem=$("#personne_photo").length > 0 ? personne_photo : lieu_photo;
 fileElem.addEventListener("change", handleFiles, false);

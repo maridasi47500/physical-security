@@ -1,4 +1,4 @@
-<h1>
+<span onclick="overlay.style.display='none';">Fermer[X]</span><h1>
 ajouter le hack d' 1 personne
 </h1>
 <form action="/nouveauhack" method="post">
@@ -18,7 +18,7 @@ ajouter le hack d' 1 personne
 </div>
 <div class="field">
 <label for="hack_text">le hack/la rumeur qui lui est arrivé (comme si j'étais elle/lui)</label>
-<input type="text" id="hack_text" name="text"  onkeyup="$('.hackertext').html(this.value);"/>
+<textarea id="hack_text" name="text"  onkeyup="$('.hackertext').html(this.value.replace(/\r\n|\r|\n/g,'<br>'));"></textarea>
 </div>
 <div class="actions">
 <input type="submit" value="creer hack"/>

@@ -27,6 +27,7 @@ class Route():
         self.dbRumeur=Gossip()
         self.dbLieu=Place()
         self.dbPersonne=Person()
+        self.dbHack=Hack()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -102,18 +103,38 @@ class Route():
     def nouveaulieu(self,search):
         myparam=self.get_post_data()(params=("pic","name",))
         self.render_figure.set_param("redirect","/")
+        x=self.dbLieu.create(myparam)
+        if x:
+          self.set_notice("votre lieu a été ajouté")
+        else:
+          self.set_code422(True)
         return self.render_some_json("welcome/redirect.json")
     def nouveauhack(self,search):
         myparam=self.get_post_data()(params=("person_id","place_id","text",))
         self.render_figure.set_param("redirect","/")
+        x=self.dbHack.create(myparam)
+        if x:
+          self.set_notice("votre hack a été ajouté")
+        else:
+          self.set_code422(True)
         return self.render_some_json("welcome/redirect.json")
     def nouvellerumeur(self,search):
         myparam=self.get_post_data()(params=("person_id","place_id","text",))
         self.render_figure.set_param("redirect","/")
+        x=self.dbRumeur.create(myparam)
+        if x:
+          self.set_notice("votre rumeur a été ajoutée")
+        else:
+          self.set_code422(True)
         return self.render_some_json("welcome/redirect.json")
     def nouvellepersonne(self,search):
         myparam=self.get_post_data()(params=("name","pic",))
         self.render_figure.set_param("redirect","/")
+        x=self.dbPersonne.create(myparam)
+        if x:
+          self.set_notice("votre personne a été ajoutée")
+        else:
+          self.set_code422(True)
         return self.render_some_json("welcome/redirect.json")
     def monscript(self,search):
         myparam=self.get_post_data()(params=("name","content",))
@@ -152,11 +173,11 @@ class Route():
           self.render_figure.set_param("lieu",self.dbLieu.getbyid(myparam["id"]))
           if not lieu1:
             self.Program.set_code422(True);
-            return self.render_figure.render_figure("ajouter/lieu1.json")
-          return self.render_figure.render_figure("ajouter/lieu.json")
+            return self.render_some_json("ajouter/lieu1.json")
+          return self.render_some_json("ajouter/lieu.json")
         except:
           self.Program.set_code422(True);
-          return self.render_figure.render_figure("ajouter/lieu1.json")
+          return self.render_some_json("ajouter/lieu1.json")
     def voirpersonne(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
@@ -167,11 +188,11 @@ class Route():
 
           if not personn1:
             self.Program.set_code422(True);
-            return self.render_figure.render_figure("ajouter/personne1.json")
-          return self.render_figure.render_figure("ajouter/personne.json")
+            return self.render_some_json("ajouter/personne1.json")
+          return self.render_some_json("ajouter/personne.json")
         except:
           self.Program.set_code422(True);
-          return self.render_figure.render_figure("ajouter/personne1.json")
+          return self.render_some_json("ajouter/personne1.json")
     def seeuser(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
