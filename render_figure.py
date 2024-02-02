@@ -1,4 +1,5 @@
 import re
+from fichier import Fichier
 import os
 import traceback
 from executeprogram import Executeprogram
@@ -39,7 +40,7 @@ class RenderFigure():
                   continue
               k=j.split("%>")
               print("my session",self.session)
-              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams}
+              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier}
               for n in self.params:
                   loc[n]=self.params[n]
               print(k[0])
