@@ -1,0 +1,370 @@
+
+#audio_languages div {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#audio_languages a.download {
+  display: block;
+  margin: 05px;
+}
+
+.vjs-current-time.vjs-time-control.vjs-control,
+.vjs-time-control.vjs-time-divider,
+.vjs-duration.vjs-time-control.vjs-control {
+  display: block;
+}
+
+.videojs-interface {
+  border: solid 1px gray;  
+}
+
+.video-js {
+  font-size: 15px;
+  color: #2B333F;
+  width: 100%;
+}
+
+.vjs-fullscreen-control.vjs-control.vjs-button,
+.vjs-big-play-button {
+  display: none !important;
+}
+
+.speaker.active {
+  background-color: #EFF2F7;
+}
+
+#speaker-list-extra-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#speaker-list-extra-wrapper table {
+  margin: 0;
+}
+#speaker-list-header-wrapper thead th {
+  padding: 16px 8px;
+  vertical-align: middle;
+  border: none;
+  color: #111;
+  background-color: #f5f6fa;
+  height: 63px;
+}
+#speaker-list-header-wrapper thead th:nth-child(1),
+#speaker-list-container tbody td:nth-child(1) {
+  width: 35%;
+}
+#speaker-list-header-wrapper thead th:nth-child(2),
+#speaker-list-container tbody td:nth-child(2) {
+  width: 25%;
+}
+#speaker-list-header-wrapper thead th:nth-child(3),
+#speaker-list-container tbody td:nth-child(3) {
+  width: 20%;
+}
+#speaker-list-header-wrapper thead th:nth-child(4),
+#speaker-list-container tbody td:nth-child(4) {
+  width: 20%;
+}
+#speaker-list-wrapper {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #eee;
+}
+
+#speaker-list-container {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#speaker-list-header {
+  display: none;
+}
+
+#player-tabs {
+  height: 50vh;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+#transcript-wrapper {
+  display: none;
+  position: relative;
+}
+
+#player-tabs.with-transcript #speaker-list-extra-wrapper {
+  width: calc(50% - 10px);
+  margin-right: 10px;
+}
+#player-tabs.with-transcript #transcript-wrapper {
+  width: calc(50% - 10px);
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+#transcript-heading {
+  /* background-color: #ced1d7; */
+  padding: 20px 10px;
+  min-height: 63px;
+}
+#transcript-heading .transcript-provider {
+  float: right;
+  font-style: italic;
+}
+
+#transcript-heading .transcript-provider img {
+  height: 20px;
+  vertical-align: baseline;
+}
+
+#transcript {
+  height: 100%;
+  overflow: auto;
+  padding: 10px;
+  flex-shrink: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  line-height: 2em;
+  max-height: 400px;
+  font-size: 1.4rem;
+  border: 1px solid #eee;
+}
+@media (min-width:1440px) {
+  #transcript {
+    max-height: none;
+  }
+}
+
+#wipo-disclaimer {
+  display:none;
+}
+
+#transcript .success {
+    color: black;
+}
+
+#transcript .success:hover {
+    outline-style: solid;
+    text-decoration: underline;
+}
+
+#transcript .active {
+  background-color: yellow !important;
+}
+
+#transcript .shl {
+    text-decoration: italic;
+}
+
+#transcript .hl:not(.active) {
+    background-color: lightgrey !important;
+}
+#transcript .hl-current-speaker {
+    background-color: #EFF2F7;
+}
+
+#transcript .unhl {
+    background-color: white;
+}
+
+#transcript-ajax-loader {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  bottom: 0;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255,255,255,0.75);
+}
+#transcript-ajax-loader img {
+  width:64px;
+  height:64px;
+}
+
+#transcript .error {
+  text-align: center;
+  font-style: italic;
+  color: red;
+}
+
+.copy-clipboard {
+  display: none;
+  margin-left: 10px;
+  font-size: 1.6rem;
+}
+
+
+@media (max-width: 768px) {
+  #player-tabs {
+    flex-direction: column;
+    height: auto;
+  }
+  #player-tabs.with-transcript #speaker-list-extra-wrapper {
+    width:100%;
+    margin-right:0;
+    height: 35vh;
+    margin-bottom: 20px;
+  }
+  #player-tabs.with-transcript #transcript-wrapper {
+    width: 100%;
+    margin-left: 0;
+    height: 35vh;
+  }
+
+  #speaker-list-header-wrapper thead th {
+    height: auto;
+  }
+
+  #player-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .video-js .vjs-remaining-time {
+    display:none;
+  }
+
+  .video-js .vjs-progress-control {
+    width: auto;
+  }
+}
+
+@media (max-width: 670px) {
+  .video-js .vjs-control {
+    width: 3em;
+  }
+  .video-js .vjs-time-control {
+    width: auto;
+  }
+
+  .video-js .vjs-remaining-time {
+    display:none;
+  }
+
+  .video-js .vjs-progress-control {
+    display:none;
+  }
+}
+
+@media (max-width: 540px) {
+  .video-js .vjs-time-divider,
+  .video-js .vjs-duration.vjs-time-control.vjs-control,
+  .video-js .vjs-playback-rate {
+    display:none;
+  }
+}
+
+/* Hide third and fourth columns on small screens.  */
+
+@media (max-width: 400px) {
+  #speaker-list-header-wrapper thead th:nth-child(3),
+  #speaker-list-header-wrapper thead th:nth-child(4),
+  #speaker-list-container tr th:nth-child(3),
+  #speaker-list-container tr th:nth-child(4),
+  #speaker-list-container tr td:nth-child(3),
+  #speaker-list-container tr td:nth-child(4) {
+    display: none;
+  }
+
+  #speaker-list-container ul li:nth-child(2),
+  #speaker-list-container ul li:nth-child(3) {
+    display: none;
+  }
+
+  #audio_languages {
+    margin-bottom: 10px;
+    padding: 0px 10px;
+  }
+
+  #audio_languages .audio_language {
+    display:block;
+  }
+
+  .vjs-current-time.vjs-time-control.vjs-control,
+  .vjs-time-control.vjs-time-divider,
+  .vjs-duration.vjs-time-control.vjs-control,
+  .vjs-progress-control.vjs-control,
+  .vjs-remaining-time.vjs-time-control.vjs-control,
+  .vjs-playback-rate.vjs-menu-button.vjs-menu-button-popup.vjs-control.vjs-button {
+    display: none;
+  }
+
+  #orgpicker {
+    width:200px;
+  }
+}
+
+
+/* Color overrides */
+
+.video-js {
+  font-size: 15px;
+  color: #000;
+}
+
+.video-js .vjs-control-bar,
+.video-js .vjs-big-play-button,
+.video-js .vjs-menu-button .vjs-menu-content {
+  background-color: rgba(239, 242, 247, 0.99);
+}
+
+.video-js .vjs-volume-level,
+.video-js .vjs-play-progress,
+.video-js .vjs-slider-bar {
+  background: #000;
+}
+
+.video-js .vjs-load-progress {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.video-js .vjs-load-progress div {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.vjs-big-play-button {
+  display: none;
+}
+
+.video-js .vjs-picture-in-picture-control {
+  display: none;
+}
+
+#audio_languages fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+@media screen and (min-width:480px) {
+  #audio_languages fieldset {
+    flex-direction: row;
+  }  
+}
+
+#audio_languages .audio_language {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  font-weight: bold;
+  background-color: #fff;
+}
+#audio_languages .audio_language input {
+  margin-right: 7px;
+}
+
+#audio_languages .audio_language .language-label .language-transcript {
+  display: block;
+  font-weight: normal;
+  font-style: italic;
+}

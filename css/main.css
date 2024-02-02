@@ -1,0 +1,429 @@
+/* General styling */
+
+.hero-section img {
+	/* Avoid the banner taling too much vertical space */
+	max-height: 356px;
+}
+
+/* End of general styling */
+
+/*meetings calendar*/
+
+#datepicker {
+	cursor: pointer; 
+	padding: 4px 0 4px 6px; 
+	border: 1px solid #ccc;
+	width: 200px;
+	font-size:13px;
+	background-color:#FFFFFF;
+	border-radius:4px;
+}
+#datepicker .caret {
+	float: right;
+    margin-right: 6px;
+}
+#keywordspicker {
+	width:175px;
+}
+
+.meeting {
+	color: #4b4b4b;
+}
+
+.meeting-link {
+	position: relative;
+}
+
+.meeting-org {
+	float:left;
+	font-size:1.05em;
+	font-weight:bold;
+}
+
+.meeting-title{
+	clear:both;
+}
+
+#meetingsnorecords,
+#meetingnorecording {
+	font-size: 2em;
+	text-align: center;
+	padding: 2em 0
+}
+
+.notfound, .notfound a {
+	color: #666;
+	text-decoration:none;
+	background:inherit;
+}
+
+.notfound .label {
+	background-color:#666;
+}
+
+.notfoundmsg {
+	display: none;
+}
+
+.notfound .notfoundmsg {
+	display: inline-block;
+}
+
+#browser-warning {
+    background: #FFFFCC;
+    font-size: 15px;
+    margin-left: -15px;
+    padding: 35px 10px 0;
+    width: 100%;
+	height: 85px;
+}
+
+#calendarwrapper label {
+	margin-bottom:0;
+}
+
+.ajax-loader{
+	width:100%;
+	text-align:center;
+}
+
+.ajax-loader img {
+	display: inline-block;
+}
+
+#calendarwrapper h1 {
+	margin:0;
+}
+
+#calendarwrapper fieldset {
+	border: 0px solid;
+}
+
+.control-group input, .control-group select{
+	font: 13px "Helvetica Neue",Helvetica,Arial,sans-serif;
+	padding: 4px 1px;
+	min-width: 150px;
+	max-width: 300px;
+}
+
+.control-group {
+	margin-bottom:0;
+	margin-left:10px;
+	float:left;
+}
+
+.ranges .range_inputs button {
+	color:#FFFFFF;
+}
+
+.controls i {
+	cursor:pointer;
+}
+
+#calendarwrapper .label, #calendarwrapper .badge{
+	font-size:11px;
+	color: #fff;
+}
+
+
+/*end of meeting calendar*/
+
+
+
+
+
+
+/*player*/
+
+#playerwrapper {
+	display: none;
+}
+
+#meetingslist #playerwrapper {
+	/* Only display when it's inside a meeting */
+	display: block;
+}
+
+
+.blue-background
+{
+   background-color: #A0CFEC;
+}
+
+.gray-background
+{
+   background-color: #EEE;
+}
+
+.alt-blue-background
+{
+    background-color: #eff2f7;
+}
+
+
+
+#overview {
+	padding:35px 0 0px 20px;
+	margin-bottom:7px;
+	height:85px;
+
+	/* Hide for now. @TODO: remove once player JS is updated */
+	display: none;
+}
+
+#sessiondatetime {
+	float:right;
+    font-size: 12px;
+    width:120px;
+    margin-right: 10px;
+    margin-top: -30px;
+}
+#sessiondate {
+	float:left;
+}
+
+
+.container {
+	width:100%;
+}
+
+#player-container {
+    border-radius:3px;
+}
+
+#player-controls {
+	border-radius:3px;
+	padding: 16px;
+}
+
+div.jp-audio {
+    height: 100px;
+    width: 600px;
+}
+
+div.jp-audio ul.jp-controls {
+	width: 500px;
+}
+div.jp-audio div.jp-type-single div.jp-progress {
+	width: 300px;
+}
+
+div.jp-audio div.jp-type-single a.jp-mute, div.jp-audio div.jp-type-single a.jp-unmute {
+	margin-left: 325px;
+}
+
+div.jp-audio div.jp-volume-bar {
+	left: 443px;
+}
+
+#speaker-list-container {
+	border: none;
+}
+
+#speaker-list-header th {
+	background-color: #f5f6fa;
+}
+
+#speaker-list {
+	background-color: #fff;
+}
+
+#speaker-list-header td {
+	cursor: pointer;
+}
+
+#speaker-list-header th {
+	border: none;
+	color: #111;
+	padding: 16px 8px;
+}
+
+#speaker-list-header th, #speaker-list td {
+	padding: 16px 8px;
+	vertical-align: middle;
+}
+
+#speaker-list td.speaker-actions {
+	cursor: auto;  /* Only have pointer cursor on actions links, not between */
+	padding: 0 8px;
+	position: relative;
+}
+
+#speaker-list .btn {
+	padding: 12px 2px;
+}
+
+#speaker-list tr:first-of-type td {
+	border-top: none;
+}
+
+#speaker-list tr.active td {
+	background-color: transparent;
+	color: #00adef;
+	font-weight: bold;
+}
+
+#speaker-list .speaker .list-inline {
+	margin-bottom: 0;
+}
+#speaker-list .speaker button.jumptotime .play {
+	display: inline;
+}
+#speaker-list .speaker button.jumptotime.playing .play {
+	display: none;
+}
+#speaker-list .speaker button.jumptotime .pause {
+	display: none;
+}
+#speaker-list .speaker button.jumptotime.playing .pause {
+	display: inline;
+}
+
+.notfound:hover {
+	background:inherit;
+}
+
+
+#audio_languages {
+	margin-bottom: 10px;
+}
+#audio_languages a.download {
+	margin-left:40px;
+	text-decoration:none;
+}
+#audio_languages .first_language {
+	display:block;
+}
+#audio_languages .audio_language {
+	font-weight: normal;
+	margin-right:10px;
+}
+
+#audio_language_list input {
+	margin-right: 2px;
+	margin-top: -1px;
+}
+
+#bottom-warning {
+	margin:0;
+}
+
+.linktoseconds {
+	display:none;
+	position: absolute;
+	background-color: #fff;
+	padding: 10px;
+	border: 1px solid #ddd;
+	box-shadow: 0 0 5px #aaa;
+	font-weight: normal;
+	color: #4b4b4b;
+	z-index: 100;
+}
+.linktoseconds textarea {
+	font-size:1em;
+	width:400px;
+	height:50px;
+}
+
+
+/*end of player*/
+
+/* Bootstrap overrides */
+
+.control-group input,
+.input-append .add-on,
+.input-prepend .add-on {
+	/* Restore form elements correct sizing */
+    box-sizing: content-box;
+}
+
+.control-group input:invalid {
+	outline: 1px solid red;
+}
+
+#meetingslist img {
+	/* Allow centering images */
+	display: inline;
+}
+
+#meetingslist .panel {
+	/* No border for meetings container */
+	border: none;
+}
+
+#meetingslist .panel-heading {
+	/* White background instead of light grey to unify look and feel */
+	background-color: #fff;
+}
+
+#meetingslist .panel-heading,
+#meetingslist .pnael-body {
+	/* Increase padding between panel border and content */
+	padding: 24px;
+}
+
+#meetingslist.panel-group .panel + .panel {
+	/* Increase space between panels */
+	margin-top: 16px;
+}
+
+#datepicker {
+	box-sizing: content-box;
+}
+
+#filters {
+	margin-bottom: 22px;
+}
+
+#filters label {
+	/* Display labels on top of fields */
+	display: block;
+}
+
+#filters .date-group {
+    margin-top: calc(-1 * (11px + 0.6em))
+}
+
+#filters .date-group .control-group:first-of-type {
+    margin-left: 0;
+}
+
+#filters .date-group input {
+    width: auto;
+}
+
+#filters .date-group label {
+    color: #4d4d4d;
+    padding-left: 0;
+    text-align: left;
+}
+
+#filters .date-group-legend {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0;
+	border: none;
+}
+
+#resetbutton, #submitbutton {
+	/* Fix sizing and alignment */
+	line-height: 20px;
+    padding: 4px 12px;
+}
+
+.panel-title > a[role="button"].meeting-link::after {
+	/* Adjust typography */
+	font-weight: bold;
+
+	/* Position caret on the right, centered vertically */
+	float: none;
+	position: absolute;
+	right: 0;
+	top: calc(50% - 9px);
+}
+
+/* end of Bootstrap overrides */
+
+.no-embed {
+	display: none;
+}
