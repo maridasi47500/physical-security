@@ -1,10 +1,5 @@
-# bienvenue dans la rumeur security
-- gossip security :
-
-- choisis 1 lieu 
-- 1 autre lieu 
-- choisis des personnes
-- et lanc des rumeur de gens qui ont été hackés
+# bienvenue dans interpreteur des nations unies 
+- bienvenue sur UN portal recordings (Digital Recordings Portal) :musical_note: :headphones: :sound: 
 - lancer:
 ```
 $ sh mysite.sh
