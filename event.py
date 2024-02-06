@@ -3,30 +3,37 @@ import sqlite3
 import sys
 import re
 from model import Model
-class Place(Model):
+from texttospeech import Texttospeech
+class Event(Model):
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
         self.cur=self.con.cursor()
-        self.cur.execute("""create table if not exists place(
+        self.cur.execute("""create table if not exists event(
         id integer primary key autoincrement,
-        name text
+        date text,
+            heure text,
+            organization_id text,
+            subtitle text,
+            place_id text,
+            privpubl text,
+            mytext text
                     );""")
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from place")
+        self.cur.execute("select * from event")
 
         row=self.cur.fetchall()
         return row
     def deletebyid(self,myid):
 
-        self.cur.execute("delete from place where id = ?",(myid,))
+        self.cur.execute("delete from event where id = ?",(myid,))
         job=self.cur.fetchall()
         self.con.commit()
         return None
     def getbyid(self,myid):
-        self.cur.execute("select * from place where id = ?",(myid,))
+        self.cur.execute("select * from event where id = ?",(myid,))
         row=dict(self.cur.fetchone())
         print(row["id"], "row id")
         job=self.cur.fetchall()
@@ -48,15 +55,17 @@ class Place(Model):
         print("M Y H A S H")
         print(myhash,myhash.keys())
         myid=None
+        hey=Texttospeech("./uploads/"+myhash["recording"])
+        myhash["mytext"]=hey.get_text()
         try:
-          self.cur.execute("insert into place (name) values (:name)",myhash)
+          self.cur.execute("insert into event (date,heure,organization_id,subtitle,place_id,privpubl,mytext) values (:date,:heure,:organization_id,:subtitle,:place_id,:privpubl,:mytext)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:
           print("my error"+str(e))
         azerty={}
-        azerty["place_id"]=myid
-        azerty["notice"]="votre place a été ajouté"
+        azerty["event_id"]=myid
+        azerty["notice"]="votre event a été ajouté"
         return azerty
 
 

@@ -3,6 +3,7 @@ from render_figure import RenderFigure
 from myscript import Myscript
 from user import User
 from myrecording import Myrecording
+from mymusic import Music
 from place import Place
 from person import Person
 from hack import Hack
@@ -100,6 +101,16 @@ class Route():
         myparam=self.get_post_data()(params=("script","missiontarget_id","missiontype_id","missionprogram_id",))
         #hi=self.dbMissionscript.create(myparam)
         return self.render_some_json("welcome/mypic.json")
+    def nouveauevent(self,search):
+        myparam=self.get_post_data()(params=("date","heure","organization_id","place_id", "subtitle","recording","privpubl"))
+        self.render_figure.set_param("redirect","/")
+        x=None
+        #x=self.db.create(myparam)
+        if x:
+          self.set_notice("votre lieu a été ajouté")
+        else:
+          self.set_code422(True)
+        return self.render_some_json("welcome/redirect.json")
     def nouveaulieu(self,search):
         myparam=self.get_post_data()(params=("pic","name",))
         self.render_figure.set_param("redirect","/")
@@ -223,9 +234,9 @@ class Route():
             self.set_json("{\"redirect\":\"/youbank\"}")
             print("session login",self.Program.get_session())
         return self.render_figure.render_json()
-    def ajouterpersonne(self,search):
+    def ajouterevent(self,search):
 
-        return self.render_figure.render_only_figure("ajouter/personne.html")
+        return self.render_figure.render_figure("ajouter/event.html")
     def ajouterlieu(self,search):
         return self.render_figure.render_only_figure("ajouter/lieu.html")
     def ajouterhack(self,search):
@@ -296,6 +307,9 @@ class Route():
         if path and path.endswith("png"):
             self.Program=Pic(path)
             self.Program.set_path("./")
+        elif path and path.endswith("mp3"):
+            self.Program=Music(path)
+            self.Program.set_path("./")
         elif path and path.endswith("jpeg"):
             self.Program=Pic(path)
             self.Program.set_path("./")
@@ -320,14 +334,10 @@ class Route():
             ROUTES={
             "^/personne/([0-9]+)$":self.voirpersonne,
             "^/lieu/([0-9]+)$":self.voirlieu,
-            '^/nouvellerumeur$': self.nouvellerumeur,
-            '^/nouveauhack$': self.nouveauhack,
+            '^/nouveauevent$': self.nouveauevent,
+            '^/ajouterevent$': self.ajouterevent,
             '^/nouveaulieu$': self.nouveaulieu,
-            '^/nouvellepersonne$': self.nouvellepersonne,
-            '^/ajouterrumeur$': self.ajouterrumeur,
-            '^/ajouterhack$': self.ajouterhack,
             '^/ajouterlieu$': self.ajouterlieu,
-            '^/ajouterpersonne$': self.ajouterpersonne,
             '^/new$': self.nouveau,
             '^/welcome$': self.welcome,
             '^/signin$': self.signin,

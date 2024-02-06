@@ -21,18 +21,25 @@ values="("
 myparam=","
 items=sys.argv
 while index < (len(items)):
+    mytype="text"
 
     try:
       print(index, items[index])
-      paramname=items[index]
+      paramnom=items[index]
+      myinfo=paramnom.split(":")
+      paramname=myinfo[0]
+      if len(myinfo) > 1:
+          mytype=myinfo[1]
+      else:
+          mytype="text"
       print(items[(index+1)])
     except:
       myparam=""
     index += 1
     columns+="{paramname}{myparam}".format(myparam=myparam,paramname=paramname)
     values+=":{paramname}{myparam}".format(myparam=myparam,paramname=paramname)
-    createtable+="""        {paramname} text{myparam}
-    """.format(myparam=myparam,paramname=paramname)
+    createtable+="""        {paramname} {mytype}{myparam}
+    """.format(myparam=myparam,paramname=paramname,mytype=mytype)
 columns+=")"
 values+=")"
 mystr="""# coding=utf-8

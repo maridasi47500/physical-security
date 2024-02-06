@@ -8,6 +8,115 @@ function getMonthName(date) {
 
 
 $(function(){
+const playIconContainer = $('.play-icon');
+let state = 'play',playicon="&#9658;",pauseicon="&#x23f8;";
+playIconContainer.html(playicon);
+playIconContainer.click(function(){
+	var someaudio=$($(this)[0].parentElement).children("audio")[0];
+	  if(state === 'play') {
+		  someaudio.play();
+		      state = 'pause';
+		  $(this).html(pauseicon);
+		    } else {
+		  someaudio.pause();
+			        state = 'play';
+		  $(this).html(playicon);
+			      }
+});
+const audio = $('audio');
+
+	audio.on('loadedmetadata', function() {
+var calculateTime = (secs)=> {
+  const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+      const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${minutes}:${returnedSeconds}`;
+        }
+		//display audio duration
+          var durationContainer = $($(this)[0].parentElement).children('.duration')[0];
+          durationContainer.textContent = calculateTime($(this)[0].duration);
+		//seek slider max
+          var seekSlider = $($(this)[0].parentElement).children('.seek-slider')[0];
+		seekSlider.max=Math.floor($(this)[0].duration);
+	});
+var allSeekSlider=$(".seek-slider");
+var calculateTime = (secs)=> {
+  const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+      const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${minutes}:${returnedSeconds}`;
+        }
+allSeekSlider.on('input', function() {
+var calculateTime = (secs)=> {
+  const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+      const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${minutes}:${returnedSeconds}`;
+        }
+          var currentTimeContainer = $($(this)[0].parentElement).children('.current-time')[0];
+	  currentTimeContainer.textContent = calculateTime($(this)[0].value);
+          var tempsrestantContainer = $($(this)[0].parentElement).children('.temps-restant')[0];
+	  tempsrestantContainer.textContent = calculateTime($(this)[0].max - $(this)[0].value);
+	 
+});
+allSeekSlider.on('change', function() {
+var calculateTime = (secs)=> {
+  const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+      const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${minutes}:${returnedSeconds}`;
+        }
+          var myaudio= $($(this)[0].parentElement).children('audio')[0];
+          var currentTimeContainer = $($(this)[0].parentElement).children('.current-time')[0];
+          var tempsrestantContainer = $($(this)[0].parentElement).children('.temps-restant')[0];
+	  myaudio.currentTime=$(this)[0].value;
+	  currentTimeContainer.textContent = calculateTime($(this)[0].value);
+	  tempsrestantContainer.textContent = calculateTime($(this)[0].max - $(this)[0].value);
+
+	if (!myaudio.paused){
+		 $(this)[0].value = Math.floor(myaudio.currentTime);
+		  currentTimeContainer.textContent = calculateTime($(this)[0].value);
+		  myaudio.style.setProperty('--seek-before-width', `${$(this)[0].value / $(this)[0].max * 100}%`);
+
+
+	}
+});
+audio.on('timeupdate', function() {
+var calculateTime = (secs)=> {
+  const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+      const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${minutes}:${returnedSeconds}`;
+        }
+          var seekSlider = $($(this)[0].parentElement).children('.seek-slider')[0];
+	  seekSlider.value = Math.floor($(this)[0].currentTime);
+          var currentTimeContainer = $($(this)[0].parentElement).children('.current-time')[0];
+          var tempsrestantContainer = $($(this)[0].parentElement).children('.temps-restant')[0];
+	  currentTimeContainer.textContent = calculateTime($(this)[0].currentTime);
+	  tempsrestantContainer.textContent = calculateTime(seekSlider.max - $(this)[0].currentTime);
+});
+const volumeSlider = $('.volume-slider');
+
+
+volumeSlider.on('input', function() {
+	  var value = $(this)[0].value;
+var outputContainer = $($(this)[0].parentElement).children('.volume-output')[0];
+
+	  outputContainer.textContent = value;
+          var myaudio= $($(this)[0].parentElement).children('audio')[0];
+	  myaudio.volume = value / 100;
+});
+audio.each(function(){
+	$(this)[0].load();
+
+});
+
+//#const displayAudioDuration = () => {
+//          var durationContainer = $(this).children('.duration');
+//          durationContainer.textContent = calculateTime(audio.duration);
+//          }
+
+
 // Create a date
  var d = new Date();
 	var today=d;
@@ -40,13 +149,17 @@ $(function(){
                 var my_date_to=Date.parse(Date.parse(date_to.value)).toDateString();
 		var todaystr=today.toISOString().split("T")[0]
 		var yesterdaystr=yesterday.toISOString().split("T")[0]
-		if (my_date_from === "today")){
+		if (my_date_from === "today"){
 		date_from.value=todaystr;
 		date_to.value=todaystr;
-	}else if (my_date_from === "today")){
+	}else if (my_date_from === "today"){
 		date_from.value=yesterdaystr;
 		date_to.value=yesterdaystr;
 
 		}
 	});
+
+
+
+
 });
