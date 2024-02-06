@@ -4,6 +4,7 @@ import os
 import traceback
 from executeprogram import Executeprogram
 import sys
+from datetime import date
 class RenderFigure():
     def __init__(self,program):
         self.session={"name":"","notice":"","mysession":False}
@@ -40,7 +41,7 @@ class RenderFigure():
                   continue
               k=j.split("%>")
               print("my session",self.session)
-              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier}
+              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
               for n in self.params:
                   loc[n]=self.params[n]
               print(k[0])
@@ -70,7 +71,7 @@ class RenderFigure():
                     continue
 
                 k=j.split("%>")
-                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection}
+                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"date":date}
                 print(dict(x))
                 if k[0]:
                   print(k[0], "content render")

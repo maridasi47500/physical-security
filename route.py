@@ -5,6 +5,7 @@ from user import User
 from myrecording import Myrecording
 from mymusic import Music
 from place import Place
+from event import Event
 from person import Person
 from hack import Hack
 from gossip import Gossip
@@ -27,6 +28,7 @@ class Route():
         self.dbRecording=Myrecording()
         self.dbRumeur=Gossip()
         self.dbLieu=Place()
+        self.dbEvent=Event()
         self.dbPersonne=Person()
         self.dbHack=Hack()
         self.render_figure=RenderFigure(self.Program)
@@ -105,11 +107,12 @@ class Route():
         myparam=self.get_post_data()(params=("date","heure","organization_id","place_id", "subtitle","recording","privpubl"))
         self.render_figure.set_param("redirect","/")
         x=None
-        #x=self.db.create(myparam)
+        x=self.dbEvent.create(myparam)
         if x:
-          self.set_notice("votre lieu a été ajouté")
+          self.set_notice("votre évènement a été ajouté")
         else:
           self.set_code422(True)
+          self.set_notice("erreur quand votre évènement a été ajouté")
         return self.render_some_json("welcome/redirect.json")
     def nouveaulieu(self,search):
         myparam=self.get_post_data()(params=("pic","name",))

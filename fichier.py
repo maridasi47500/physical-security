@@ -1,7 +1,12 @@
+from os.path import exists as existe
 class Fichier:
   def __init__(self,path,name):
     self.path=path
     self.name=name
+  def existe(self):
+    x=existe(self.path+"/"+self.name)
+    print(x)
+    return x
   def lire(self):
     print(self.path+"/"+self.name)
     j=open(self.path+"/"+self.name, "r")

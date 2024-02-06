@@ -4,10 +4,12 @@ import sys
 import re
 from model import Model
 from texttospeech import Texttospeech
+from speaker import Speaker
 class Event(Model):
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
+        self.dbSpeaker=Speaker()
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists event(
         id integer primary key autoincrement,
@@ -55,14 +57,31 @@ class Event(Model):
         print("M Y H A S H")
         print(myhash,myhash.keys())
         myid=None
-        hey=Texttospeech("./uploads/"+myhash["recording"])
-        myhash["mytext"]=hey.get_text()
+        hey=Texttospeech(myhash["recording"])
+        hey.script1()
+        temps=0
+        duration=60
+
         try:
+          myhash["mytext"]=""
           self.cur.execute("insert into event (date,heure,organization_id,subtitle,place_id,privpubl,mytext) values (:date,:heure,:organization_id,:subtitle,:place_id,:privpubl,:mytext)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:
           print("my error"+str(e))
+        try:
+          while True:
+            tempsdebut=temps
+            if temps == 0:
+              sometext=hey.get_text_hey(duration)
+            else:
+              sometext=hey.get_text_hey(duration,temps)
+            temps+=60
+            tempsfin=temps
+            speaker=self.dbSpeaker.create({"name":"Speaker","text":sometext,"timedebut":tempsdebut,"timefin":tempsfin,"event_id":myid})
+
+        except Exception as e:
+          print("Hey",e)
         azerty={}
         azerty["event_id"]=myid
         azerty["notice"]="votre event a été ajouté"

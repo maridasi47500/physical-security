@@ -1,10 +1,10 @@
 <h1>ajouter 1 évènement</h1>
-<form id="filters" class="searchrecording container small" aria-controls="meetingsresults" aria-label="Make a selection">
+<form id="filters" class="createrecording container small" method="post" action="/nouveauevent" aria-controls="meetingsresults" aria-label="Make a selection">
 	                      <div class="row date-group">
 																										                        <div class="control-group">
 																														                          <label class="control-label" for="madate"> date</label>
 																																	                            <div class="controls">
-																																					                                <input type="date" id="madate" name="date" required="" min="2013-01-01" max="2024-02-01">
+																																					    <input type="date" id="madate" name="date" required="" min="2013-01-01" max="<%=str(date.today())%>">
 																																									                          </div>
 																																												                          </div>
 																																															                          <div class="control-group">
@@ -62,7 +62,7 @@
 																																																																																																																																																																																		                              <div class="control-group">
 																																																																																																																																																																																						                                <label class="control-label" for="monlieu">lieu</label>
 																																																																																																																																																																																										                          <div class="controls input-prepend">
-																																																																																																																																																																																														                              <input type="text" name="place_id" id="monlieu">
+																																																																																																																																																																																														                              <input type="text" name="place_id" id="monlieu"/>
 																																																																																																																																																																																																	                                  <span class="add-on">
 																																																																																																																																																																																																										                            </span>
 																																																																																																																																																																																																													                              </div>
@@ -70,7 +70,7 @@
 																																																																																																																																																																																																																			                              <div class="control-group">
 																																																																																																																																																																																																																							                                <div class="control-label">&nbsp;</div>
 																																																																																																																																																																																																																											                          <div class="controls">
-																																																																																																																																																																																																																															                              <button type="submit" class="btn btn-primary btn-sm" name="submit" id="submitbutton" value="submit">ajouter un évènement / meeting</button>
+																																																																																																																																																																																																																															                              <input type="submit" class="btn btn-primary btn-sm" name="submit" id="submitbutton" value="ajouter un évènement / meeting" />
 																																																																																																																																																																																																																																		                                </div>
 																																																																																																																																																																																																																																						                        </div>
 																																																																																																																																																																																																																																									                        <div class="control-group">
