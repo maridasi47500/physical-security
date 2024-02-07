@@ -23,6 +23,21 @@ class Event(Model):
                     );""")
         self.con.commit()
         #self.con.close()
+    def getall_speaker(self):
+        self.cur.execute("select event.*,organization.name as organization,event.place_id as place from event left join organization on organization.value = event.organization_id")
+
+        row=self.cur.fetchall()
+        rows=[]
+        for x in row:
+            y=dict(x)
+            self.cur.execute("select * from speaker where event_id = ?",(x["id"],))
+            hey=self.cur.fetchall()
+            if hey:
+              y["speakers"]=hey
+            else:
+              y["speakers"]=[]
+            rows.append(y)
+        return rows
     def getall(self):
         self.cur.execute("select * from event")
 

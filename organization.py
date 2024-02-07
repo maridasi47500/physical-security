@@ -10,7 +10,8 @@ class Organization(Model):
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists organization(
         id integer primary key autoincrement,
-        name text
+        name text,
+            value text
                     );""")
         self.con.commit()
         #self.con.close()
@@ -49,7 +50,7 @@ class Organization(Model):
         print(myhash,myhash.keys())
         myid=None
         try:
-          self.cur.execute("insert into organization (name) values (:name)",myhash)
+          self.cur.execute("insert into organization (name,value) values (:name,:value)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:

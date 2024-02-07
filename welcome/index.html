@@ -78,7 +78,7 @@ The recording of the proceedings of private meetings are password protected. </p
 																																																																																																																																																																																																																																																														                        </div>
 																																																																																																																																																																																																																																																																	                    </form>
 </p>
-<div id="meetingsresults" role="status" aria-live="polite" aria-label="Number of results" class="alert alert-info no-embed" style="display: block;">0 result found.</div>
+<div id="meetingsresults" role="status" aria-live="polite" aria-label="Number of results" class="alert alert-info no-embed" style="display: block;"><%=len(params["events"])%> result found.</div>
 <div id="meetingslist" class="panel-group accordion" aria-multiselectable="false">
 	<%=render_collection(collection=params['events'], partial='welcome/_hey.html', as_='event')%>
 

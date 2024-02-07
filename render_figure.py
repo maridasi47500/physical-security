@@ -49,40 +49,60 @@ class RenderFigure():
                 l=exec("myvalue="+k[0], globals(), loc)
                 mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
                 mystr+=k[1]
-              except:
-                l=exec("myvalue='erreurici pour "+k[0]+"'", globals(), loc)
-                mystr=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+              except Exception as e:
+                l="<div style='background:red;color:white;'>erreurici pour afficher <div class=\"codeerreur\" style=\"background:black;color:white;\">"+k[0]+"</div>"+traceback.format_exc()+"<br>"+str(e)+"</div>".replace("\r\n",'<br>')
+                #mystr=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+                mystr=l
 
 
+          self.body=mystr
+          #if self.mytemplate is not None:
+          #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
+          #self.body=self.render_body()
+          #try:
+          #  return self.body.encode("utf-8")
+          #except:
+          #  return self.body
           return mystr
         except Exception:
-          mystr="erreur : "+traceback.format_exc()
-          self.body=mystr
+          mystr="<p style='background:red;color:white;'>erreur : "+traceback.format_exc()+"</p>"
+          #self.body=mystr
+          #if self.mytemplate is not None:
+          #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
+          #self.body=self.render_body()
+          #try:
+          #  return self.body.encode("utf-8")
+          #except:
+          #  return self.body
+
           return mystr
     def render_collection(self, collection,partial,as_):
-        myview=open(os.path.abspath("./"+partial),"r").read()
-        mystr=""
-        i=0
-        paspremier=False
-        for x in collection:
-            for j in myview.split("<%="):
-                if "%>" not in j:
-                    mystr+=j
-                    continue
+        try:
+          myview=open(os.path.abspath("./"+partial),"r").read()
+          mystr=""
+          i=0
+          paspremier=False
+          for x in collection:
+              for j in myview.split("<%="):
+                  if "%>" not in j:
+                      mystr+=j
+                      continue
 
-                k=j.split("%>")
-                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"date":date}
-                print(dict(x))
-                if k[0]:
-                  print(k[0], "content render")
-                  print(k[0])
-                  l=exec("myvalue="+k[0], globals(), loc)
-                  mystr+=str(loc["myvalue"])
-                if k[1]:
-                  mystr+=k[1]
-            i+=1
-            paspremier=True
-        return mystr
+                  k=j.split("%>")
+                  loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"date":date}
+                  print(dict(x))
+                  if k[0]:
+                    print(k[0], "content render")
+                    print(k[0])
+                    l=exec("myvalue="+k[0], globals(), loc)
+                    mystr+=str(loc["myvalue"])
+                  if k[1]:
+                    mystr+=k[1]
+              i+=1
+              paspremier=True
+          return mystr
+        except Exception as e:
+            raise ValueError("<div>Un certain truc sest mal passé avec<div style=\"background:black;color:#eb00eb;\" class=\"someerror\"> "+k[0]+"</div>---><div style=\"background:black;color:#eb00eb;\" class=\"someerror\">"+str(e)+"</div></div>")
     def partie_de_mes_mots(self,balise="",text=""):
         r="<{balise}>{text}</{balise}>"
         s="""
