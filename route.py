@@ -161,8 +161,7 @@ class Route():
         self.render_figure.set_param("enregistrer",True)
         return self.render_figure.render_figure("welcome/radio.html")
     def hello(self,search):
-        self.render_figure.set_param("rumeurs",self.dbRumeur.getall())
-        self.render_figure.set_param("hacks",self.dbHack.getall())
+        self.render_figure.set_param("events",self.dbEvent.getall())
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def delete_user(self,params={}):
