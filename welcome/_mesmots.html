@@ -1,0 +1,6 @@
+<div s="<%=speaker["id"]%>" class="original sentence" id="mysentence<%=speaker["id"]%>" start="<%=speaker["time_debut"]%>" end="<%=speaker["time_fin"]%>">
+	<%params['s']=speaker["id"]%>
+	<%mytext=speaker["text"].split(" ")%>
+	<%=render_collection(collection=mytext, partial='welcome/_speakertext.html', as_='text')%>
+
+</div>

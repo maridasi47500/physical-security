@@ -4,6 +4,7 @@ import os
 import traceback
 from executeprogram import Executeprogram
 import sys
+import datetime
 from datetime import date
 class RenderFigure():
     def __init__(self,program):
@@ -35,7 +36,27 @@ class RenderFigure():
     def render_body(self):
         try:
           mystr=""
-          for j in self.body.split("<%="):
+          loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date,"datetime":datetime}
+          for n in self.params:
+              loc[n]=self.params[n]
+          for j in self.body.split("<%"):
+
+            if j[0] == "=":
+              j=j[1:]
+              if "%>" not in j:
+                  mystr+=j
+                  continue
+              k=j.split("%>")
+              print("my session",self.session)
+
+              if k[0]:
+                print(k[0])
+                l=exec("myvalue="+k[0], globals(), loc)
+                mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+              if k[1]:
+                mystr+=k[1]
+
+            else:
               if "%>" not in j:
                   mystr+=j
                   continue
@@ -45,17 +66,10 @@ class RenderFigure():
               for n in self.params:
                   loc[n]=self.params[n]
               print(k[0])
-              try:
-                l=exec("myvalue="+k[0], globals(), loc)
-                mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+              l=exec("myvalue="+k[0], globals(), loc)
+              mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+              if k[1]:
                 mystr+=k[1]
-              except Exception as e:
-                l="<div style='background:red;color:white;'>erreurici pour afficher <div class=\"codeerreur\" style=\"background:black;color:white;\">"+k[0]+"</div>"+traceback.format_exc()+"<br>"+str(e)+"</div>".replace("\r\n",'<br>')
-                #mystr=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
-                mystr=l
-
-
-          self.body=mystr
           #if self.mytemplate is not None:
           #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
           #self.body=self.render_body()
@@ -65,7 +79,9 @@ class RenderFigure():
           #  return self.body
           return mystr
         except Exception:
-          mystr="<p style='background:red;color:white;'>erreur : "+traceback.format_exc()+"</p>"
+          l="<div style='background:red;color:white;'>erreurici pour afficher <div class=\"codeerreur\" style=\"background:black;color:white;\">"+k[0]+"</div>"+traceback.format_exc()+"<br>"+str(e)+"</div>".replace("\r\n",'<br>')
+          #mystr=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+          mystr=l
           #self.body=mystr
           #if self.mytemplate is not None:
           #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
@@ -77,32 +93,52 @@ class RenderFigure():
 
           return mystr
     def render_collection(self, collection,partial,as_):
+        print("render collection")
         try:
-          myview=open(os.path.abspath("./"+partial),"r").read()
-          mystr=""
-          i=0
-          paspremier=False
-          for x in collection:
-              for j in myview.split("<%="):
-                  if "%>" not in j:
-                      mystr+=j
-                      continue
+            myview=open(os.path.abspath("./"+partial),"r").read()
+            mystr=""
+            i=0
+            paspremier=False
+            ligne=0
+            for x in collection:
+                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"date":date,"datetime":datetime}
+                for j in myview.split("<%"):
+                    ligne+=j.count("\r\n")
+                    if j[0] == "=":
+                        j=j[1:]
+                        if "%>" not in j:
+                            mystr+=j
+                            continue
 
-                  k=j.split("%>")
-                  loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"date":date}
-                  print(dict(x))
-                  if k[0]:
-                    print(k[0], "content render")
-                    print(k[0])
-                    l=exec("myvalue="+k[0], globals(), loc)
-                    mystr+=str(loc["myvalue"])
-                  if k[1]:
-                    mystr+=k[1]
-              i+=1
-              paspremier=True
-          return mystr
+                        k=j.split("%>")
+                        print(dict(x))
+                        if k[0]:
+                            print(k[0], "content render")
+                            print(k[0])
+                            l=exec("myvalue="+k[0], globals(), loc)
+                            mystr+=str(loc["myvalue"])
+                        if k[1]:
+                            mystr+=k[1]
+                    else:
+                        if "%>" not in j:
+                            mystr+=j
+                            continue
+
+                        k=j.split("%>")
+
+                        print(dict(x))
+                        if k[0]:
+                            print(k[0], "content render")
+                            print(k[0])
+                            l=exec(k[0], globals(), loc)
+                            #mystr+=str(loc["myvalue"])
+                        if k[1]:
+                            mystr+=k[1]
+                i+=1
+                paspremier=True
+            return mystr
         except Exception as e:
-            raise ValueError("<div>Un certain truc sest mal passé avec<div style=\"background:black;color:#eb00eb;\" class=\"someerror\"> "+k[0]+"</div>---><div style=\"background:black;color:#eb00eb;\" class=\"someerror\">"+str(e)+"</div></div>")
+            raise ValueError("<meta charset=\"utf-8\"><div>Un certain truc sest mal passé avec<div style=\"background:black;color:#eb00eb;\" class=\"someerror\"> "+k[0]+"</div>---><div style=\"background:black;color:#eb00eb;\" class=\"someerror\">"+str(e)+"-- ligne "+str(ligne)+"</div></div>")
     def partie_de_mes_mots(self,balise="",text=""):
         r="<{balise}>{text}</{balise}>"
         s="""

@@ -19,18 +19,18 @@ class Event(Model):
             subtitle text,
             place_id text,
             privpubl text,
-            mytext text
+            recording text
                     );""")
         self.con.commit()
         #self.con.close()
     def getall_speaker(self):
-        self.cur.execute("select event.*,organization.name as organization,event.place_id as place from event left join organization on organization.value = event.organization_id")
+        self.cur.execute("select event.*,organization.name as organizationname,event.place_id as place from event left join organization on organization.myvalue = event.organization_id group by event.id")
 
         row=self.cur.fetchall()
         rows=[]
         for x in row:
             y=dict(x)
-            self.cur.execute("select * from speaker where event_id = ?",(x["id"],))
+            self.cur.execute("select speaker.*,e.heure from speaker left join event e on e.id = speaker.event_id group by speaker.id having speaker.event_id = ? ",(x["id"],))
             hey=self.cur.fetchall()
             if hey:
               y["speakers"]=hey
@@ -78,8 +78,7 @@ class Event(Model):
         duration=60
 
         try:
-          myhash["mytext"]=""
-          self.cur.execute("insert into event (date,heure,organization_id,subtitle,place_id,privpubl,mytext) values (:date,:heure,:organization_id,:subtitle,:place_id,:privpubl,:mytext)",myhash)
+          self.cur.execute("insert into event (recording,date,heure,organization_id,subtitle,place_id,privpubl) values (:recording,:date,:heure,:organization_id,:subtitle,:place_id,:privpubl)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:
@@ -93,7 +92,7 @@ class Event(Model):
               sometext=hey.get_text_hey(duration,temps)
             temps+=60
             tempsfin=temps
-            speaker=self.dbSpeaker.create({"name":"Speaker","text":sometext,"timedebut":tempsdebut,"timefin":tempsfin,"event_id":myid})
+            speaker=self.dbSpeaker.create({"name":"Speaker","text":sometext,"time_debut":tempsdebut,"time_fin":tempsfin,"event_id":myid})
 
         except Exception as e:
           print("Hey",e)

@@ -161,6 +161,8 @@ class Route():
         self.render_figure.set_param("enregistrer",True)
         return self.render_figure.render_figure("welcome/radio.html")
     def hello(self,search):
+        print("hello action")
+        print("hello action")
         self.render_figure.set_param("events",self.dbEvent.getall_speaker())
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
@@ -364,9 +366,12 @@ class Route():
                if x:
                    params["routeparams"]=x.groups()
                    try:
-                       self.Program.set_html(html=mycase(params))
-                   except Exception:  
-                       self.Program.set_html(html="<p>une erreur s'est produite "+str(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>")
+                       html=mycase(params)
+                   except Exception as e:  
+                       print("erreur"+str(e),traceback.format_exc())
+                       html=("<p>une erreur s'est produite dans le code server  "+(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>").encode("utf-8")
+                       print(html)
+                   self.Program.set_html(html=html)
                    self.Program.clear_notice()
                    self.Program.redirect_if_not_logged_in()
                    return self.Program
