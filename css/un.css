@@ -104,3 +104,21 @@ input[type="range"] {
 																	  background: #007db5;
 																  }
 
+																  div.original.sentence {
+																	      display: flex;
+																	          width: 100%;
+																		      flex-wrap: wrap;
+																	      }
+																	      div.sentence span {
+																		          display: table;
+																			      margin-left: 4px;
+																		      }
+																		      .speaker-list-extra-wrapper,.transcript-wrapper {
+																			      width:50%;
+																			      overflow-y:scroll;
+																			      height:300px;
+																			      float:left;
+																		      }
+																		      .player-tabs {
+																			      height:300px;
+																		      }

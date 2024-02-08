@@ -110,6 +110,22 @@ audio.each(function(){
 	$(this)[0].load();
 
 });
+$(".jumptotime").click(function(){
+	var time=$(this)[0].parentElement.parentElement.parentElement.parentElement.children[3].innerHTML.replaceAll("\n\t","").replaceAll("\t","").replaceAll("\n","").replaceAll(" ","").split(":");
+	var seconds=Number(time[0])*3600+Number(time[1])*60+Number(time[0]);
+	var someaudio=$("audio[data-eventid="+$(this)[0].dataset.eventid+"]")[0];
+	someaudio.currentTime=seconds;
+	if(state === 'play') {
+		                  someaudio.play();
+		                      state = 'pause';
+		                  $(playIconContainer).html(pauseicon);
+		                    } else {
+					                      someaudio.pause();
+					                                    state = 'play';
+					                      $(playIconContainer).html(playicon);
+					                                  }
+	
+});
 
 //#const displayAudioDuration = () => {
 //          var durationContainer = $(this).children('.duration');

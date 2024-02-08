@@ -92,7 +92,7 @@ class RenderFigure():
           #  return self.body
 
           return mystr
-    def render_collection(self, collection,partial,as_):
+    def render_collection(self, collection,partial,as_,mylocals={}):
         print("render collection")
         try:
             myview=open(os.path.abspath("./"+partial),"r").read()
@@ -100,8 +100,15 @@ class RenderFigure():
             i=0
             paspremier=False
             ligne=0
+            loc={"Executeprogram":Executeprogram,"paspremier":False,as_: "","index":"",  "params": self.params,"render_collection":self.render_collection,"date":date,"datetime":datetime}
+            for y in mylocals:
+                loc[y]=mylocals[y]
+
             for x in collection:
-                loc={"Executeprogram":Executeprogram,"paspremier":paspremier,as_: x,"index":i,  "params": self.params,"render_collection":self.render_collection,"date":date,"datetime":datetime}
+                loc["index"]=i
+                loc["paspremier"]=paspremier
+                loc[as_]=x
+
                 for j in myview.split("<%"):
                     ligne+=j.count("\r\n")
                     if j[0] == "=":
