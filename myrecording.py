@@ -10,7 +10,9 @@ class Myrecording(Model):
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists myrecording(
         id integer primary key autoincrement,
-        recording text
+        recording text,
+            language text,
+            event_id text
                     );""")
         self.con.commit()
         #self.con.close()
@@ -49,7 +51,7 @@ class Myrecording(Model):
         print(myhash,myhash.keys())
         myid=None
         try:
-          self.cur.execute("insert into myrecording (recording) values (:recording)",myhash)
+          self.cur.execute("insert into myrecording (recording,language,event_id) values (:recording,:language,:event_id)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:

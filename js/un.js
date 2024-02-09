@@ -8,7 +8,26 @@ function getMonthName(date) {
 
 
 $(function(){
+if ($(".audio.language input[name='language']").length > 0){
+$(".audio.language input[name='language']").change(function(){
+var l=$(".audio.language input[name='language']:checked")[0].value;
+$.ajax({
+type:"post",
+url:"/getenregistrement",
+data:{language:l},
+success:function(data){
+if (data.nbrecording.length === 0 && confirm("ajouter un enregistrement pour "+l+" ?")){
+window.location="/getenregistrement/"+$("[data-eventid]")[0].dataset.eventid+"?hey="+l;
+};
+}
+});
+});
+}
+if (window.location.href.includes("nouvelenregistrement")){
+$("#language1")[0].value=window.location.href.split("hey=")[1]
+}
 const playIconContainer = $('.play-icon');
+if (playIconContainer.length > 0){
 let state = 'play',playicon="&#9658;",pauseicon="&#x23f8;";
 playIconContainer.html(playicon);
 playIconContainer.click(function(){
@@ -110,6 +129,7 @@ audio.each(function(){
 	$(this)[0].load();
 
 });
+
 $(".jumptotime").click(function(){
 	var time=$(this)[0].parentElement.parentElement.parentElement.parentElement.children[3].innerHTML.replaceAll("\n\t","").replaceAll("\t","").replaceAll("\n","").replaceAll(" ","").split(":");
 	var seconds=Number(time[0])*3600+Number(time[1])*60+Number(time[0]);
@@ -126,6 +146,7 @@ $(".jumptotime").click(function(){
 					                                  }
 	
 });
+}
 
 //#const displayAudioDuration = () => {
 //          var durationContainer = $(this).children('.duration');
@@ -174,6 +195,7 @@ $(".jumptotime").click(function(){
 
 		}
 	});
+
 
 
 

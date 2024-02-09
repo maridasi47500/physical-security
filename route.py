@@ -82,6 +82,8 @@ class Route():
         return self.render_figure.render_figure("welcome/chat.html")
     def welcome(self,search):
         return self.render_figure.render_figure("welcome/index.html")
+    def getenregistrement(self,search):
+        return self.render_some_json("welcome/somerecording.json")
     def audio_save(self,search):
         myparam=self.get_post_data()(params=("recording",))
         hi=self.dbRecording.create(myparam)
@@ -129,6 +131,15 @@ class Route():
         x=self.dbHack.create(myparam)
         if x:
           self.set_notice("votre hack a été ajouté")
+        else:
+          self.set_code422(True)
+        return self.render_some_json("welcome/redirect.json")
+    def nouvelenregistrement(self,search):
+        myparam=self.get_post_data()(params=("event_id","language","recording",))
+        self.render_figure.set_param("redirect","/")
+        x=self.dbRecording.create(myparam)
+        if x:
+          self.set_notice("votre enregistrement a été ajoutée")
         else:
           self.set_code422(True)
         return self.render_some_json("welcome/redirect.json")
@@ -241,6 +252,19 @@ class Route():
     def ajouterevent(self,search):
 
         return self.render_figure.render_figure("ajouter/event.html")
+    def ajouterenregistrement(self,search):
+        getparams=("id",)
+
+        print("get param, action see my new",getparams)
+        myparam=self.get_this_route_param(getparams,params)
+
+        try:
+          event1=self.dbEvent.getbyid(myparam["id"])
+          self.render_figure.set_param("myid",myparam["id"])
+          self.render_figure.set_param("event",event1)
+        except:
+          print("i missed event")
+        return self.render_figure.render_figure("ajouter/enregistrement.html")
     def ajouterlieu(self,search):
         return self.render_figure.render_only_figure("ajouter/lieu.html")
     def ajouterhack(self,search):
@@ -340,8 +364,9 @@ class Route():
             "^/lieu/([0-9]+)$":self.voirlieu,
             '^/nouveauevent$': self.nouveauevent,
             '^/ajouterevent$': self.ajouterevent,
-            '^/nouveaulieu$': self.nouveaulieu,
-            '^/ajouterlieu$': self.ajouterlieu,
+            '^/getenregistrement/([0-9]+)$': self.getenregistrement,
+            '^/nouvelenregistrement/([0-9]+)$': self.nouvelenregistrement,
+            '^/ajouterenregistrement$': self.ajouterenregistrement,
             '^/new$': self.nouveau,
             '^/welcome$': self.welcome,
             '^/signin$': self.signin,
