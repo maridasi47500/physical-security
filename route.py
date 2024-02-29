@@ -2,13 +2,6 @@ from directory import Directory
 from render_figure import RenderFigure
 from myscript import Myscript
 from user import User
-from myrecording import Myrecording
-from mymusic import Music
-from place import Place
-from event import Event
-from person import Person
-from hack import Hack
-from gossip import Gossip
 
 
 from mypic import Pic
@@ -25,12 +18,6 @@ class Route():
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
         self.dbScript=Myscript()
-        self.dbRecording=Myrecording()
-        self.dbRumeur=Gossip()
-        self.dbLieu=Place()
-        self.dbEvent=Event()
-        self.dbPersonne=Person()
-        self.dbHack=Hack()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -86,7 +73,7 @@ class Route():
         return self.render_some_json("welcome/somerecording.json")
     def audio_save(self,search):
         myparam=self.get_post_data()(params=("recording",))
-        hi=self.dbRecording.create(myparam)
+        hi=""
         return self.render_some_json("welcome/hey.json")
     def allscript(self,search):
         #myparam=self.get_post_data()(params=("name","content",))
@@ -109,7 +96,7 @@ class Route():
         myparam=self.get_post_data()(params=("date","heure","organization_id","place_id", "subtitle","recording","privpubl"))
         self.render_figure.set_param("redirect","/")
         x=None
-        x=self.dbEvent.create(myparam)
+        x="hey"
         if x:
           self.set_notice("votre évènement a été ajouté")
         else:
@@ -119,7 +106,7 @@ class Route():
     def nouveaulieu(self,search):
         myparam=self.get_post_data()(params=("pic","name",))
         self.render_figure.set_param("redirect","/")
-        x=self.dbLieu.create(myparam)
+        x=""
         if x:
           self.set_notice("votre lieu a été ajouté")
         else:
@@ -128,7 +115,7 @@ class Route():
     def nouveauhack(self,search):
         myparam=self.get_post_data()(params=("person_id","place_id","text",))
         self.render_figure.set_param("redirect","/")
-        x=self.dbHack.create(myparam)
+        x=""
         if x:
           self.set_notice("votre hack a été ajouté")
         else:
@@ -137,7 +124,7 @@ class Route():
     def nouvelenregistrement(self,search):
         myparam=self.get_post_data()(params=("event_id","language","recording",))
         self.render_figure.set_param("redirect","/")
-        x=self.dbRecording.create(myparam)
+        x=""
         if x:
           self.set_notice("votre enregistrement a été ajoutée")
         else:
@@ -146,7 +133,7 @@ class Route():
     def nouvellerumeur(self,search):
         myparam=self.get_post_data()(params=("person_id","place_id","text",))
         self.render_figure.set_param("redirect","/")
-        x=self.dbRumeur.create(myparam)
+        x=""
         if x:
           self.set_notice("votre rumeur a été ajoutée")
         else:
@@ -155,7 +142,7 @@ class Route():
     def nouvellepersonne(self,search):
         myparam=self.get_post_data()(params=("name","pic",))
         self.render_figure.set_param("redirect","/")
-        x=self.dbPersonne.create(myparam)
+        x=""
         if x:
           self.set_notice("votre personne a été ajoutée")
         else:
@@ -174,7 +161,7 @@ class Route():
     def hello(self,search):
         print("hello action")
         print("hello action")
-        self.render_figure.set_param("events",self.dbEvent.getall_speaker())
+        self.render_figure.set_param("events",[])
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def delete_user(self,params={}):
@@ -197,8 +184,8 @@ class Route():
         myparam=self.get_this_route_param(getparams,params)
 
         try:
-          lieu1=self.dbLieu.getbyid(myparam["id"])
-          self.render_figure.set_param("lieu",self.dbLieu.getbyid(myparam["id"]))
+          lieu1=""
+          self.render_figure.set_param("lieu","")
           if not lieu1:
             self.Program.set_code422(True);
             return self.render_some_json("ajouter/lieu1.json")
@@ -211,7 +198,7 @@ class Route():
         print("get param, action see my new",getparams)
         myparam=self.get_this_route_param(getparams,params)
         try:
-          personn1=self.dbPersonne.getbyid(myparam["id"])
+          personn1=""
           self.render_figure.set_param("person",personn1)
 
           if not personn1:
@@ -259,7 +246,7 @@ class Route():
         myparam=self.get_this_route_param(getparams,params)
 
         try:
-          event1=self.dbEvent.getbyid(myparam["id"])
+          event1="hey"
           self.render_figure.set_param("myid",myparam["id"])
           self.render_figure.set_param("event",event1)
         except:
@@ -268,12 +255,12 @@ class Route():
     def ajouterlieu(self,search):
         return self.render_figure.render_only_figure("ajouter/lieu.html")
     def ajouterhack(self,search):
-        self.render_figure.set_param("personnes",self.dbPersonne.getall())
-        self.render_figure.set_param("lieux",self.dbLieu.getall())
+        self.render_figure.set_param("personnes",[])
+        self.render_figure.set_param("lieux",[])
         return self.render_figure.render_only_figure("ajouter/hack.html")
     def ajouterrumeur(self,search):
-        self.render_figure.set_param("personnes",self.dbPersonne.getall())
-        self.render_figure.set_param("lieux",self.dbLieu.getall())
+        self.render_figure.set_param("personnes",[])
+        self.render_figure.set_param("lieux",[])
         return self.render_figure.render_only_figure("ajouter/rumeur.html")
     def nouveau(self,search):
         return self.render_figure.render_figure("welcome/new.html")
