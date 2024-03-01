@@ -13,7 +13,7 @@ class User(Model):
         email text,
             password text,
             nomcomplet text,
-            password_security text
+            image text
                     );""")
         self.con.commit()
         #self.con.close()
@@ -28,20 +28,6 @@ class User(Model):
         job=self.cur.fetchall()
         self.con.commit()
         return None
-    def getbyemailpwsecurity(self,email,pw,security):
-        self.cur.execute("select * from user where email = ? and password = ? and password_security = ?",(email,pw,security,))
-        myrow=dict(self.cur.fetchone())
-        print(myrow["id"], "row id")
-        row={}
-        try:
-          row["notice"]="vous êtes connecté"
-          row["name"]=myrow["nomcomplet"]
-          row["user_id"]=myrow["id"]
-          row["email"]=myrow["email"]
-
-        except Exception as e:
-          row={"notice":"votre connexion n'a pas fonctionné","name":"","email":""}
-        return row
     def getbyid(self,myid):
         self.cur.execute("select * from user where id = ?",(myid,))
         row=dict(self.cur.fetchone())
@@ -65,24 +51,26 @@ class User(Model):
         print("M Y H A S H")
         print(myhash,myhash.keys())
         myid=None
-        try:
-          self.cur.execute("insert into user (email,password,password_security,nomcomplet) values (:email,:password,:password_security,:nomcomplet)",myhash)
-          self.con.commit()
-          myid=str(self.cur.lastrowid)
-        except Exception as e:
-          print("my error"+str(e))
-
         azerty={}
         try:
-          azerty["user_id"]=myid
-          azerty["name"]=myhash["nomcomplet"]
-          azerty["email"]=myhash["email"]
-          azerty["notice"]="votre user a été ajouté"
-        except:
-          azerty["user_id"]=""
-          azerty["name"]=""
-          azerty["email"]=""
-          azerty["notice"]="votre inscription n'a pas fonctionné"
+            if myhash["password"] == myhash["passwordconfirmation"]:
+                 del myhash["passwordconfirmation"]
+                 self.cur.execute("insert into user (email,password,nomcomplet,image) values (:email,:password,:nomcomplet,:image)",myhash)
+                 self.con.commit()
+                 myid=str(self.cur.lastrowid)
+
+                 azerty["notice"]="votre user a été ajouté"
+            else:
+                 myid=None
+                 azerty["notice"]="votre user n'a pas été ajouté les mots de passe ne sont pas identiques"
+            azerty["user_id"]=myid
+
+        except Exception as e:
+            print("my error"+str(e))
+            azerty["user_id"]=None
+            azerty["notice"]="votre user n'a pas été ajouté les mots de passe ne sont pas identiques"+str(e)
+
+
         return azerty
 
 

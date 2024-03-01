@@ -286,14 +286,14 @@ class Route():
         return self.render_figure.render_figure("user/signin.html")
 
     def save_user(self,params={}):
-        myparam=self.get_post_data()(params=("email","password","password_security","nomcomplet"))
+        myparam=self.get_post_data()(params=("email","password","passwordconfirmation","nomcomplet","image"))
         self.user=self.dbUsers.create(myparam)
         if self.user["user_id"]:
             self.set_session(self.user)
-            self.set_json("{\"redirect\":\"/youbank\"}")
+            self.set_json("{\"redirect\":\"/\"}")
             return self.render_figure.render_json()
         else:
-            self.set_json("{\"redirect\":\"/youbank_inscription\"}")
+            self.set_json("{\"redirect\":\"/\"}")
             return self.render_figure.render_json()
     def joueraujeu(self,params={}):
         self.set_json("{\"redirect\":\"/signin\"}")
@@ -358,7 +358,7 @@ class Route():
             '^/welcome$': self.welcome,
             '^/signin$': self.signin,
             '^/logmeout$':self.logout,
-            '^/save_user$':self.save_user,
+            '^/signup$':self.save_user,
             '^/update_user$':self.update_user,
             "^/seeuser/([0-9]+)$":self.seeuser,
             "^/edituser/([0-9]+)$":self.edit_user,
