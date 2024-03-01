@@ -28,6 +28,21 @@ class User(Model):
         job=self.cur.fetchall()
         self.con.commit()
         return None
+    def getbyemailpwsecurity(self,myid):
+        self.cur.execute("select * from user where email = ? and password = ?",(myid["email"],myid["password"],))
+        row=dict(self.cur.fetchone())
+        hey={}
+        try:
+            hey["user_id"]=row["id"]
+            hey["email"]=row["email"]
+            hey["name"]=row["nomcomplet"]
+            hey["notice"]="user trouvé"
+        except:
+            hey["email"]=None
+            hey["user_id"]=""
+            hey["name"]=None
+            hey["notice"]="user non trouvé"
+        return hey
     def getbyid(self,myid):
         self.cur.execute("select * from user where id = ?",(myid,))
         row=dict(self.cur.fetchone())

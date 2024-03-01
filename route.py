@@ -225,16 +225,12 @@ class Route():
         self.set_session(self.user)
         self.set_redirect(("/seeuser/"+params["id"][0]))
     def login(self,s):
-        search=self.get_post_data()(params=("email","password","password_security"))
-        self.user=self.dbUsers.getbyemailpwsecurity(search["email"],search["password"],search["password_security"])
+        search=self.get_post_data()(params=("email","password"))
+        self.user=self.dbUsers.getbyemailpwsecurity(search)
         print("user trouve", self.user)
-        if self.user["email"] != "":
-            print("redirect carte didentite")
-            self.set_session(self.user)
-            self.set_json("{\"redirect\":\"/cartedidentite\"}")
-        else:
-            self.set_json("{\"redirect\":\"/youbank\"}")
-            print("session login",self.Program.get_session())
+        self.set_session(self.user)
+        self.set_json("{\"redirect\":\"/\"}")
+        print("session login",self.Program.get_session())
         return self.render_figure.render_json()
     def ajouterevent(self,search):
 

@@ -120,11 +120,15 @@ class Directory():
             self.session["notice"]=""
     def redirect_if_not_logged_in(self):
         mysession=self.get_session()
-        if mysession and not mysession['user_id']:
-            mysession["user_id"]=""
-        if (not mysession or mysession and (int("0"+str(mysession["user_id"])) == 0)) and not self.redirect and self.url not in ["/","/youbank","/youbank_inscription","/cartedidentite"] and self.url in ["/fill_in_inbox","/post_hom_office","/tweet_details"]:
+        userid=mysession["user_id"]
+
+        if mysession and not userid:
+            userid=""
+        else:
+            userid=str(userid)
+        if (not mysession or mysession and (int("0"+userid) == 0)) and not self.redirect and self.url not in ["/"]:
             print("ok not loged in")
-            redi="/youbank"
+            redi="/"
             self.redirect=redi
             self.html="Moved permanently to <a href=\"{url}\">{url}</a>".format(url=redi)
             self.session["notice"]="vous n'êtes pas connecté"
