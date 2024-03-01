@@ -121,7 +121,6 @@ class Directory():
     def redirect_if_not_logged_in(self):
         mysession=self.get_session()
         userid=mysession["user_id"]
-
         if mysession and not userid:
             userid=""
         else:

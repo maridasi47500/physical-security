@@ -226,9 +226,9 @@ class S(BaseHTTPRequestHandler):
         if sess:
             for cookie in req.cookies:
                     cookie.value = sess[cookie.name]
-        if sess and not sess["mysession"]:
-            for cookie in req.cookies:
-                    cookie.value = ""
+        #if sess and not sess["mysession"]:
+        #    for cookie in req.cookies:
+        #            cookie.value = ""
 
         self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music())
         self.wfile.write(myProgram.get_html())
@@ -247,8 +247,11 @@ class S(BaseHTTPRequestHandler):
         myProgram=Route().run(path=str(self.path),params=myparams,session=dictcook,url=self.path,post_data=self.deal_post_data)
         sess= myProgram.get_session()
         if sess:
-          for x in sess:
-            req.cookies.set(x,sess[x])
+            for cookie in req.cookies:
+                    cookie.value = sess[cookie.name]
+        #if sess and not sess["mysession"]:
+        #    for cookie in req.cookies:
+        #            cookie.value = ""
 
         self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music())
         self.wfile.write(myProgram.get_html())
