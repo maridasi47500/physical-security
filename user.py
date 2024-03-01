@@ -38,8 +38,6 @@ class User(Model):
         print("ok")
         myhash={}
         for x in params:
-            if 'confirmation' in x:
-                continue
             if 'envoyer' in x:
                 continue
             if '[' not in x and x not in ['routeparams']:

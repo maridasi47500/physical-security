@@ -293,8 +293,9 @@ class Route():
             self.set_json("{\"redirect\":\"/\"}")
             return self.render_figure.render_json()
         else:
+            self.set_session(self.user)
             self.set_json("{\"redirect\":\"/\"}")
-            return self.render_figure.render_json()
+        return self.render_figure.render_json()
     def joueraujeu(self,params={}):
         self.set_json("{\"redirect\":\"/signin\"}")
         getparams=("song_id","jeu_id")
