@@ -43,6 +43,8 @@ class S(BaseHTTPRequestHandler):
         try:
             print("params as trouver",params)
             monpremier=True
+            heyThere=False
+            i=0
             content_type = self.headers['Content-Type']
             myhash={}
             someparams=[]
@@ -71,11 +73,66 @@ class S(BaseHTTPRequestHandler):
                     print("P a r a m : ",param)
                     q=line.decode()
                     print("q: ",q)
+                    n1 = re.findall(r'Content-Disposition.*name="'+param+'*"', q)
+                    print("search text field array",n1)
                     n = re.findall(r'Content-Disposition.*name="'+param+'"', q)
                     print("search text field",n)
                     fn = re.findall(r'Content-Disposition.*name="'+param+'"; filename="(.*)"', q)
                     print("search filefield",fn)
-                    if len(fn) == 0 and len(n) > 0:
+                    if len(n) == 0 and len(fn) == 0 and len(n1) > 0 and "[" in q and "}" in q:
+                        findparam=1
+                        print("search param value",param)
+                        #premier \r\n
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        self.myline(preline)
+
+                        content=bytearray()
+                        #premier \r\n
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        self.myline(preline)
+                        while remainbytes > 0:
+                            line = self.rfile.readline()
+                            self.myline(line)
+                            remainbytes -= len(line)
+                            self.myline(preline)
+                            if boundary in line:
+                                preline = preline[0:-1]
+                                if preline.endswith(b'\r'):
+                                    preline = preline[0:-1]
+                                content.extend(preline)
+                                try:
+                                    print(myhash[param.split("[")[0]])
+                                    i=0
+                                    while not heyThere:
+                                        try:
+                                            print(myhash[param.split("[")[0]][i][param.split("]")[1]])
+
+                                        except:
+                                            try:
+                                                myhash[param.split("[")[0]][i][param.split("]")[1]]=content.rstrip()
+                                            except:
+                                                myhash[param.split("[")[0]][i][param.split("]")[1]]=content.rstrip().decode()
+                                            heyThere=True
+                                        i+=1
+                                except:
+                                    try:
+                                        myhash[param.split("[")[0]]={0: {param.split("]")[1]: content.rstrip().decode()}}
+                                    except:
+                                        myhash[param.split("[")[0]]={0: {param.split("]")[1]: content.rstrip()}}
+                                print(myhash)
+                                someparams.append(param)
+                                print(True, "Param '%s' saved success! with value %s" % (param,content))
+                                break#return (True, "File '%s' upload success!" % fn)
+                            else:
+                                print("Premier param")
+                                self.myline(preline)
+                                content.extend(preline)
+                                preline = line
+
+                        print(False, "Can't find out file name...")
+                    elif len(fn) == 0 and len(n) > 0:
                         findparam=1
                         print("search param value",param)
                         #premier \r\n

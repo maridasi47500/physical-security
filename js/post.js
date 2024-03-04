@@ -48,6 +48,37 @@ return false;
   });
 	return false;
   });
+	if($(".ajouter").length > 0){
+		$(".ajouter").click(function(){
+			document.getElementById("overlay").style.display = "block";
+			$(".heynom").html($($(this)[0].parentElement).children("h5").html());
+		});
+		$(".close").click(function(){
+			  document.getElementById("overlay").style.display = "none";
+			var str1=$(".heynom").html();
+			var str=$(".heynom").html().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        var length=$(".meschamp")[0].children.length;
+			var pic=$("[name=mypic]");
+			var name=$("[name=myname]");
+
+                        $(".meschamp").append(`
+			<div>
+			<div class="champ">
+			ajout #${length}
+                                     nom de la ou du ${str1}
+				     <input name="${str}[]name" value="${name.val()}" />
+				</div>
+			<div class="champ">
+                                     image
+				     <input name="${str}[]image" value="${pic[0].files[0].name}" />
+				</div>
+				</div>
+				`);
+			name.val("");
+			pic.val("");
+
+		});
+	}
 
   
 });

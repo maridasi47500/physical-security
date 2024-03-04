@@ -2,6 +2,8 @@ from directory import Directory
 from render_figure import RenderFigure
 from myscript import Myscript
 from user import User
+from security import Security
+from metier import Metier
 
 
 from mypic import Pic
@@ -18,6 +20,8 @@ class Route():
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
         self.dbScript=Myscript()
+        self.dbMetier=Metier()
+        self.dbSecurity=Security()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -161,7 +165,8 @@ class Route():
     def hello(self,search):
         print("hello action")
         print("hello action")
-        self.render_figure.set_param("events",[])
+        self.render_figure.set_param("metier",self.dbMetier.getall())
+        self.render_figure.set_param("security",self.dbSecurity.getall())
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def delete_user(self,params={}):

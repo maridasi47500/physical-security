@@ -35,41 +35,45 @@ class RenderFigure():
         return x
     def render_body(self):
         try:
-          mystr=""
           loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date,"datetime":datetime}
-          for n in self.params:
-              loc[n]=self.params[n]
-          for j in self.body.split("<%"):
+          while "<%" in self.body and "%>" in self.body:
+              mystr=""
 
-            if j[0] == "=":
-              j=j[1:]
-              if "%>" not in j:
-                  mystr+=j
-                  continue
-              k=j.split("%>")
-              print("my session",self.session)
-
-              if k[0]:
-                print(k[0])
-                l=exec("myvalue="+k[0], globals(), loc)
-                mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
-              if k[1]:
-                mystr+=k[1]
-
-            else:
-              if "%>" not in j:
-                  mystr+=j
-                  continue
-              k=j.split("%>")
-              print("my session",self.session)
-              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
               for n in self.params:
                   loc[n]=self.params[n]
-              print(k[0])
-              l=exec("myvalue="+k[0], globals(), loc)
-              mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
-              if k[1]:
-                mystr+=k[1]
+              for j in self.body.split("<%"):
+
+                if j[0] == "=":
+                  j=j[1:]
+                  print("my session",j)
+                  if "%>" not in j:
+                      mystr+=j
+                      continue
+                  k=j.split("%>")
+                  #print("my session",self.session)
+
+                  if k[0]:
+                    print(k[0])
+                    l=exec("myvalue="+k[0], globals(), loc)
+                    mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+                  if k[1]:
+                    mystr+=k[1]
+
+                else:
+                  if "%>" not in j:
+                      mystr+=j
+                      continue
+                  k=j.split("%>")
+                  print("my session",self.session)
+                  loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
+                  for n in self.params:
+                      loc[n]=self.params[n]
+                  print(k[0])
+                  l=exec("myvalue="+k[0], globals(), loc)
+                  mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+                  if k[1]:
+                    mystr+=k[1]
+              self.body=mystr
           #if self.mytemplate is not None:
           #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
           #self.body=self.render_body()
