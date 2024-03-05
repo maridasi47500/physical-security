@@ -69,8 +69,8 @@ class RenderFigure():
                   for n in self.params:
                       loc[n]=self.params[n]
                   #print(k[0])
-                  l=exec("myvalue="+k[0], globals(), loc)
-                  mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+                  l=exec(k[0], globals(), loc)
+                  #mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
                   if k[1]:
                     mystr+=k[1]
               self.body=mystr

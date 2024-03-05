@@ -15,6 +15,7 @@
 <nav>
 
 </nav>
+<%=Fichier("./welcome","nav.html").lire() if session["user_id"] != "" else ""%>
         <h1>{debutmots}</h1>
 <div id="notice"><%=session["notice"]%></div>
 <div id="myuserid" hidden><%=session["user_id"]%></div>

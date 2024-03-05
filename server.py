@@ -181,7 +181,7 @@ class S(BaseHTTPRequestHandler):
                         print("P a r a m : ",param)
                         print("q: ",q)
                         print("heyheyhey")
-                        nameofparam=q.split("]")[1].replace('"',"")
+                        nameofparam=q.split("]")[1].split('"')[0]
                         print("hey there; name of param;",nameofparam)
                         findparam=1
                         print("search param value of q:",q)

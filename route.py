@@ -4,6 +4,7 @@ from myscript import Myscript
 from user import User
 from security import Security
 from metier import Metier
+from hack import Hack
 
 
 from mypic import Pic
@@ -22,6 +23,7 @@ class Route():
         self.dbScript=Myscript()
         self.dbMetier=Metier()
         self.dbSecurity=Security()
+        self.dbHack=Hack()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -165,6 +167,7 @@ class Route():
     def hello(self,search):
         print("hello action")
         print("hello action")
+        self.render_figure.set_param("current_user_id",self.Program.get_session_param("user_id"))
         self.render_figure.set_param("metier",self.dbMetier.getall())
         self.render_figure.set_param("security",self.dbSecurity.getall())
         print("hello action")
@@ -283,12 +286,20 @@ class Route():
     def jouerjeux(self,search):
         return self.render_figure.render_figure("welcome/jeu.html")
     def addhack(self,search):
-        myparam=self.get_post_data()(params=("security_id","metier_id","details","cle[]","serrure[]","chien[]","garde[]"))
-        print(myparam,"my param")
+        myparam=self.get_post_data()(params=("user_id","security_id","metier_id","details","cle[]","serrure[]","chien[]","garde[]"))
+        self.dbHack.create(myparam)
         self.set_json("{\"redirect\":\"/myhack\"}")
         return self.render_figure.render_json()
+    def voirhack(self,params):
+        getparams=("id",)
+        myparam=self.get_this_route_param(getparams,params)
+        hey=self.dbHack.getbyid(myparam["id"])
+        print(hey)
+        self.render_figure.set_param("hack",hey)
+        return self.render_figure.render_figure("welcome/voirhack.html")
 
     def myhack(self,search):
+        self.render_figure.set_param("hack",self.dbHack.getall())
         return self.render_figure.render_figure("welcome/Hey.html")
 
     def signin(self,search):
@@ -365,6 +376,7 @@ class Route():
             '^/nouvelenregistrement/([0-9]+)$': self.nouvelenregistrement,
             '^/ajouterenregistrement$': self.ajouterenregistrement,
             '^/myhack$': self.myhack,
+            '^/hack/([0-9]+)$': self.voirhack,
             '^/addhack$': self.addhack,
             '^/new$': self.nouveau,
             '^/welcome$': self.welcome,
