@@ -48,6 +48,8 @@ return false;
   });
 	return false;
   });
+			const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			const charactersLength = characters.length;
 	if($(".ajouter").length > 0){
 		$(".ajouter").click(function(){
 			document.getElementById("overlay").style.display = "block";
@@ -58,9 +60,17 @@ return false;
 			var str1=$(".heynom").html();
 			var str=$(".heynom").html().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                         var length=$(".meschamp")[0].children.length;
-			var pic=$("[name=mypic]");
-			var name=$("[name=myname]");
+			var name=$("[name='myname']");
+			//random string
+			let result = '';
 
+			let counter = 0;
+			var mylength=10;
+			while (counter < mylength) {
+				result += characters.charAt(Math.floor(Math.random() * charactersLength));
+				counter += 1;
+			if (counter === mylength){
+				console.log(result,"hey");
                         $(".meschamp").append(`
 			<div>
 			<div class="champ">
@@ -70,12 +80,16 @@ return false;
 				</div>
 			<div class="champ">
                                      image
-				     <input name="${str}[]image" value="${pic[0].files[0].name}" />
+				     <input class="${result}" type="file" name="${str}[]image" />
 				</div>
 				</div>
 				`);
+
 			name.val("");
-			pic.val("");
+			}
+			}
+
+
 
 		});
 	}

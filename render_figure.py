@@ -45,7 +45,7 @@ class RenderFigure():
 
                 if j[0] == "=":
                   j=j[1:]
-                  print("my session",j)
+                  #print("my session",j)
                   if "%>" not in j:
                       mystr+=j
                       continue
@@ -53,7 +53,7 @@ class RenderFigure():
                   #print("my session",self.session)
 
                   if k[0]:
-                    print(k[0])
+                    #print(k[0])
                     l=exec("myvalue="+k[0], globals(), loc)
                     mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
                   if k[1]:
@@ -64,11 +64,11 @@ class RenderFigure():
                       mystr+=j
                       continue
                   k=j.split("%>")
-                  print("my session",self.session)
+                  #print("my session",self.session)
                   loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
                   for n in self.params:
                       loc[n]=self.params[n]
-                  print(k[0])
+                  #print(k[0])
                   l=exec("myvalue="+k[0], globals(), loc)
                   mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
                   if k[1]:
@@ -122,10 +122,10 @@ class RenderFigure():
                             continue
 
                         k=j.split("%>")
-                        print(dict(x))
+                        #print(dict(x))
                         if k[0]:
-                            print(k[0], "content render")
-                            print(k[0])
+                            #print(k[0], "content render")
+                            #print(k[0])
                             l=exec("myvalue="+k[0], globals(), loc)
                             mystr+=str(loc["myvalue"])
                         if k[1]:
@@ -137,10 +137,10 @@ class RenderFigure():
 
                         k=j.split("%>")
 
-                        print(dict(x))
+                        #print(dict(x))
                         if k[0]:
-                            print(k[0], "content render")
-                            print(k[0])
+                            #print(k[0], "content render")
+                            #print(k[0])
                             l=exec(k[0], globals(), loc)
                             #mystr+=str(loc["myvalue"])
                         if k[1]:

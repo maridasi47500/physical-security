@@ -8,14 +8,12 @@ class Fichier:
     print(x)
     return x
   def lire(self):
-    print(self.path+"/"+self.name)
     j=open(self.path+"/"+self.name, "r")
     return j.read()
   def ligneparligne(self):
     j=open(self.path+"/"+self.name, "r")
     return j.readlines()
   def lirefichier(self):
-    print(self.path+"/"+self.name)
     j=open(self.path+"/"+self.name, "rb")
     return j.read()
   def ecrire(self,mycontent):

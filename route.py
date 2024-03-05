@@ -282,6 +282,14 @@ class Route():
         return self.render_some_json("welcome/lyrics.json")
     def jouerjeux(self,search):
         return self.render_figure.render_figure("welcome/jeu.html")
+    def addhack(self,search):
+        myparam=self.get_post_data()(params=("security_id","metier_id","details","cle[]","serrure[]","chien[]","garde[]"))
+        print(myparam,"my param")
+        self.set_json("{\"redirect\":\"/myhack\"}")
+        return self.render_figure.render_json()
+
+    def myhack(self,search):
+        return self.render_figure.render_figure("welcome/Hey.html")
 
     def signin(self,search):
         return self.render_figure.render_figure("user/signin.html")
@@ -356,6 +364,8 @@ class Route():
             '^/getenregistrement/([0-9]+)$': self.getenregistrement,
             '^/nouvelenregistrement/([0-9]+)$': self.nouvelenregistrement,
             '^/ajouterenregistrement$': self.ajouterenregistrement,
+            '^/myhack$': self.myhack,
+            '^/addhack$': self.addhack,
             '^/new$': self.nouveau,
             '^/welcome$': self.welcome,
             '^/signin$': self.signin,

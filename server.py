@@ -57,6 +57,7 @@ class S(BaseHTTPRequestHandler):
             print(self.myline(line))
             remainbytes -= len(line)
             preline=b""
+            nameofparam=""
             print(line)
             if not boundary in line:
                 print(False, "Content NOT begin with boundary")
@@ -70,18 +71,121 @@ class S(BaseHTTPRequestHandler):
                 findparam=0
                 print(tuple(ele for ele in params if ele not in someparams))
                 for param in tuple(ele for ele in params if ele not in someparams):
-                    print("P a r a m : ",param)
+                    i=0
+
                     q=line.decode()
-                    print("q: ",q)
-                    n1 = re.findall(r'Content-Disposition.*name="'+param+'*"', q)
-                    print("search text field array",n1)
-                    n = re.findall(r'Content-Disposition.*name="'+param+'"', q)
-                    print("search text field",n)
-                    fn = re.findall(r'Content-Disposition.*name="'+param+'"; filename="(.*)"', q)
-                    print("search filefield",fn)
-                    if len(n) == 0 and len(fn) == 0 and len(n1) > 0 and "[" in q and "}" in q:
+
+                    #print("search text field array",n1)
+                    n2 = re.findall(r'Content-Disposition.*name="'+param.replace("]","\]").replace("[","\[")+'[a-z]*"', q)
+                    fn2 = re.findall(r'Content-Disposition.*name="'+param.replace("]","\]").replace("[","\[")+'[a-z]*"; filename="(.*)"', q)
+                    #print(r'Content-Disposition.*name="'+param.replace("]","\]").replace("[","\[")+'[a-z]*"; filename="(.*)"', q)
+                    #print("search text field array file2",fn2)
+                    n = re.findall(r'Content-Disposition.*name="'+param.replace("]","\]").replace("[","\[")+'"', q)
+                    #print("search text field",n)
+                    fn = re.findall(r'Content-Disposition.*name="'+param.replace("]","\]").replace("[","\[")+'"; filename="(.*)"', q)
+                    #print("search filefield",fn)
+                    #print("1")
+                    #print(len(n) == 0)
+                    #print(len(n1) > 0 and "[" in param and "}" in param and "[" in q and "]" in q)
+                    #print("[" in param and "]" in param and "[" in q and "]" in q)
+                    #print("}" in param and "[" in q and "]" in q)
+                    #print(len(fn) == 0 and len(n1) > 0 and "[" in param and "]" in param and "[" in q and "]" in q)
+                    print(len(n2) > 0)
+                    print(len(fn2) > 0)
+                    print(len(n2) > 0 and len(fn2) > 0)
+                    if len(n2) > 0 and len(fn2) > 0 and "[" in param and "]" in param and "[" in q and "]" in q:
+                        print("ok ok ok")
+                        print("P a r a m : ",param)
+                        print("q: ",q)
                         findparam=1
-                        print("search param value",param)
+                        path="./uploads"
+                        filename=""
+                        myname=Chaine().fichier(fn2[0])
+                        filename+=myname
+                        somefilename=myname
+                        nameofparam=q.split("]")[1].split('"')[0]
+                        print("file name : ",filename)
+                        fn = os.path.join(path, filename)
+                        #\r\
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        self.myline(preline)
+
+                        try:
+                            out = open(fn, 'wb')
+                        except IOError:
+                            print(False, "Can't create file to write, do you have permission to write?")
+                            continue
+                        premier=True
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        while remainbytes > 0:
+                            line = self.rfile.readline()
+                            remainbytes -= len(line)
+
+                            if boundary in line:
+                                preline = preline[0:-1]
+                                if preline.endswith(b'\r'):
+                                    preline = preline[0:-1]
+                                content.extend(preline)
+                                try:
+                                    #print("Hey hello",content.rstrip())
+                                    i=0
+                                    heyThere=False
+                                    #print(myhash[param.split("[")[0]][i])
+                                    while not heyThere:
+                                        try:
+                                            #print("param :::::::::::::")
+                                            print(myhash[param.split("[")[0]][i][nameofparam])
+                                        except:
+                                            print("hey")
+                                            try:
+                                                print(myhash[param.split("[")[0]][i])
+                                                myhash[param.split("[")[0]][i][nameofparam]=somefilename
+                                                heyThere=True
+
+                                            except:
+                                                try:
+                                                    print(myhash[param.split("[")[0]])
+                                                    myhash[param.split("[")[0]][i]={nameofparam: somefilename}
+                                                    heyThere=True
+                                                except:
+                                                    try:
+                                                        myhash[param.split("[")[0]]={i: {nameofparam: somefilename}}
+                                                        heyThere=True
+                                                    except:
+                                                        print("Yeah")
+
+                                        print(i)
+                                        i+=1
+
+                                except Exception as e:
+                                    print("erruer")
+                                    #print(myhash,"(myhash)")
+
+                                print(myhash)
+                                if "[" not in param:
+                                    someparams.append(param)
+                                #print(True, "Param '%s' saved success! with value %s" % (param,content))
+                                break#return (True, "File '%s' upload success!" % fn)
+                            else:
+                                out.write(preline)
+                                if premier:
+                                    premier=False
+                                    print("Premier")
+                                    self.myline(preline)
+                                preline = line
+                    elif len(n2) > 0 and len(fn2) == 0 and "[" in param and "]" in param and "[" in q and "]" in q:
+                        print("P a r a m : ",param)
+                        print("q: ",q)
+                        print("heyheyhey")
+                        nameofparam=q.split("]")[1].replace('"',"")
+                        print("hey there; name of param;",nameofparam)
+                        findparam=1
+                        print("search param value of q:",q)
+                        print("param:",param)
                         #premier \r\n
                         preline = self.rfile.readline()
                         remainbytes -= len(preline)
@@ -103,26 +207,48 @@ class S(BaseHTTPRequestHandler):
                                     preline = preline[0:-1]
                                 content.extend(preline)
                                 try:
-                                    print(myhash[param.split("[")[0]])
                                     i=0
+                                    heyThere=False
+                                    try:
+                                        somefilename=content.rstrip().decode()
+                                    except:
+                                        somefilename=content.rstrip()
+                                    #print(myhash[param.split("[")[0]][i])
                                     while not heyThere:
                                         try:
-                                            print(myhash[param.split("[")[0]][i][param.split("]")[1]])
-
+                                            #print("param :::::::::::::")
+                                            print(myhash[param.split("[")[0]][i][nameofparam])
                                         except:
+                                            print("hey")
                                             try:
-                                                myhash[param.split("[")[0]][i][param.split("]")[1]]=content.rstrip()
+                                                print(myhash[param.split("[")[0]][i])
+                                                myhash[param.split("[")[0]][i][nameofparam]=somefilename
+                                                heyThere=True
+
                                             except:
-                                                myhash[param.split("[")[0]][i][param.split("]")[1]]=content.rstrip().decode()
-                                            heyThere=True
+                                                try:
+                                                    print(myhash[param.split("[")[0]])
+                                                    myhash[param.split("[")[0]][i]={nameofparam: somefilename}
+                                                    heyThere=True
+                                                except:
+                                                    try:
+                                                        myhash[param.split("[")[0]]={i: {nameofparam: somefilename}}
+                                                        heyThere=True
+                                                    except:
+                                                        print("Yeah")
+
+                                        print(i)
                                         i+=1
-                                except:
+                                except Exception as e:
+                                    print("erruer",e)
+                                    print(myhash,"(myhash)")
                                     try:
-                                        myhash[param.split("[")[0]]={0: {param.split("]")[1]: content.rstrip().decode()}}
+                                        myhash[param.split("[")[0]]={0: {nameofparam: content.rstrip().decode()}}
                                     except:
-                                        myhash[param.split("[")[0]]={0: {param.split("]")[1]: content.rstrip()}}
+                                        myhash[param.split("[")[0]]={0: {nameofparam: content.rstrip()}}
                                 print(myhash)
-                                someparams.append(param)
+                                if "[" not in param:
+                                    someparams.append(param)
                                 print(True, "Param '%s' saved success! with value %s" % (param,content))
                                 break#return (True, "File '%s' upload success!" % fn)
                             else:
@@ -130,9 +256,73 @@ class S(BaseHTTPRequestHandler):
                                 self.myline(preline)
                                 content.extend(preline)
                                 preline = line
+                        print(False, "Can't find out file name...")
+                    elif len(n) > 0 and len(fn) == 0 and "[" in param and "]" in param and "[" in q and "]" in q:
+                        print("P a r a m : ",param)
+                        print("q: ",q)
+                        print("heyheyhey")
+                        nameofparam=q.split("]")[1].replace('"',"")
+                        print("hey there; name of param;",nameofparam)
+                        findparam=1
+                        print("search param value of q:",q)
+                        print("param:",param)
+                        #premier \r\n
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        self.myline(preline)
 
+                        content=bytearray()
+                        #premier \r\n
+                        preline = self.rfile.readline()
+                        remainbytes -= len(preline)
+                        self.myline(preline)
+                        while remainbytes > 0:
+                            line = self.rfile.readline()
+                            self.myline(line)
+                            remainbytes -= len(line)
+                            self.myline(preline)
+                            if boundary in line:
+                                preline = preline[0:-1]
+                                if preline.endswith(b'\r'):
+                                    preline = preline[0:-1]
+                                content.extend(preline)
+                                try:
+                                    print("Hey hello",content.rstrip())
+                                    i=0
+                                    print(myhash[param.split("[")[0]][i])
+                                    while not heyThere:
+                                        try:
+                                            print(myhash[param.split("[")[0]][i][nameofparam])
+                                        except:
+                                            try:
+                                                print(q, "q")
+                                                print(q.split("]")[1].replace('"',""), "name of param")
+                                                myhash[param.split("[")[0]][i][nameofparam]=content.rstrip()
+                                            except:
+                                                myhash[param.split("[")[0]][i][nameofparam]=content.rstrip().decode()
+                                            heyThere=True
+                                        i+=1
+                                except Exception as e:
+                                    print("erruer",e)
+                                    print(myhash,"(myhash)")
+                                    try:
+                                        myhash[param.split("[")[0]]={0: {nameofparam: content.rstrip().decode()}}
+                                    except:
+                                        myhash[param.split("[")[0]]={0: {nameofparam: content.rstrip()}}
+                                print(myhash)
+                                if "[" not in param:
+                                    someparams.append(param)
+                                print(True, "Param '%s' saved success! with value %s" % (param,content))
+                                break#return (True, "File '%s' upload success!" % fn)
+                            else:
+                                print("Premier param")
+                                self.myline(preline)
+                                content.extend(preline)
+                                preline = line
                         print(False, "Can't find out file name...")
                     elif len(fn) == 0 and len(n) > 0:
+                        print("P a r a m : ",param)
+                        print("q: ",q)
                         findparam=1
                         print("search param value",param)
                         #premier \r\n
@@ -160,7 +350,8 @@ class S(BaseHTTPRequestHandler):
                                 except:
                                     myhash[param]=content.rstrip()
                                 print(myhash)
-                                someparams.append(param)
+                                if "[" not in param:
+                                    someparams.append(param)
                                 print(True, "Param '%s' saved success! with value %s" % (param,content))
                                 break#return (True, "File '%s' upload success!" % fn)
                             else:
@@ -171,6 +362,8 @@ class S(BaseHTTPRequestHandler):
 
                         print(False, "Can't find out file name...")
                     elif len(fn) > 0:
+                        print("P a r a m : ",param)
+                        print("q: ",q)
                         findparam=1
                         path="./uploads"
                         filename=""
@@ -208,7 +401,8 @@ class S(BaseHTTPRequestHandler):
                                 out.write(preline)
                                 out.close()
                                 myhash[param] = somefilename
-                                someparams.append(param)
+                                if "[" not in param:
+                                    someparams.append(param)
                                 print(myhash)
                                 print(True, "File '%s' upload success! '%s'" % (fn,somefilename))
                                 break#return (True, "File '%s' upload success!" % fn)
