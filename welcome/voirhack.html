@@ -5,18 +5,18 @@
 
 <h3>clé</h3>
 <div class="row row-cols-1 row-cols-md-2 g-4">
-<%=render_collection(collection=hack['cle'], partial='welcome/_somehack.html', as_='hack') if len(hack["cle"]) > 0 else ""%>
+<%=render_collection(collection=hack['cle'], partial='welcome/_somehack.html', as_='hack') if len(hack["cle"]) > 0 else "pas de clés"%>
 </div>
 
 <h3>serrure</h3>
 <div class="row row-cols-1 row-cols-md-2 g-4">
-<%=render_collection(collection=hack['serrure'], partial='welcome/_somehack.html', as_='hack') if len(hack["serrure"]) > 0 else ""%>
+<%=render_collection(collection=hack['serrure'], partial='welcome/_somehack.html', as_='hack') if len(hack["serrure"]) > 0 else "aucune serrure"%>
 </div>
 <h3>garde</h3>
 <div class="row row-cols-1 row-cols-md-2 g-4">
-<%=render_collection(collection=hack['garde'], partial='welcome/_somehack.html', as_='hack') if len(hack["garde"]) > 0 else ""%>
+<%=render_collection(collection=hack['garde'], partial='welcome/_somehack.html', as_='hack') if len(hack["garde"]) > 0 else "aucun garde"%>
 </div>
 <h3>chien</h3>
 <div class="row row-cols-1 row-cols-md-2 g-4">
-<%=render_collection(collection=hack['chien'], partial='welcome/_somehack.html', as_='hack') if len(hack["chien"]) > 0 else ""%>
+<%=render_collection(collection=hack['chien'], partial='welcome/_somehack.html', as_='hack') if len(hack["chien"]) > 0 else "aucun chien"%>
 </div>
